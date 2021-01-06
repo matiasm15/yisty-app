@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-import 'package:yisty_app/data/stores/ui_singleton.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:yisty_app/widgets/design/loading_button.dart';
 
 @immutable
@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _focusChanged(bool hasFocus) {
-    UiSingleton().uiStore().removeErrorMessage();
+    InheritedProvider.of(context).uiStore.removeErrorMessage();
 
     if (!hasFocus) {
       _formKey.currentState.validate();
@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
   void _formSubmitted(RoundedLoadingButtonController controller) {
     FocusScope.of(context).unfocus();
 
-    final UiStore uiStore = UiSingleton().uiStore();
+    final UiStore uiStore = InheritedProvider.of(context).uiStore;
     uiStore.removeErrorMessage();
 
     // Validate returns true if the form is valid, otherwise false.

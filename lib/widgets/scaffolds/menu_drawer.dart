@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'package:yisty_app/data/stores/ui_singleton.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 
 @immutable
 class MenuDrawer extends StatelessWidget {
-  Observer observerDrawerHeader(BuildContext context) {
-    return Observer(builder: (_) => showDrawerHeader(context));
+  Observer observerDrawerHeader(ThemeData theme, UiStore uiStore) {
+    return Observer(builder: (_) => showDrawerHeader(theme, uiStore));
   }
 
-  Widget showDrawerHeader(BuildContext context) {
-    final UiStore uiStore = UiSingleton().uiStore();
-
+  Widget showDrawerHeader(ThemeData theme, UiStore uiStore) {
     return UserAccountsDrawerHeader(
       accountName: Text(uiStore.user.name),
       accountEmail: Text(uiStore.user.email),
@@ -24,14 +22,15 @@ class MenuDrawer extends StatelessWidget {
         ),
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: theme.primaryColor,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final UiStore uiStore = UiSingleton().uiStore();
+    final UiStore uiStore = InheritedProvider.of(context).uiStore;
+    final ThemeData theme = Theme.of(context);
 
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
@@ -41,7 +40,7 @@ class MenuDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          observerDrawerHeader(context),
+          observerDrawerHeader(theme, uiStore),
           ListTile(
             leading: const Icon(Icons.list),
             title: const Text('Historial'),
@@ -61,7 +60,9 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Cerrar sesión'),
             onTap: () {
-              uiStore.logoutUser().then((_) => Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
+              uiStore
+                  .logoutUser()
+                  .then((_) => Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
             },
           ),
         ],

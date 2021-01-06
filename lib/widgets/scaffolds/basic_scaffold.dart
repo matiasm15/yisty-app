@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'package:yisty_app/data/stores/ui_singleton.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 
 @immutable
 class BasicScaffold extends StatefulWidget {
@@ -21,13 +21,11 @@ class BasicScaffold extends StatefulWidget {
 }
 
 class _BasicScaffoldState extends State<BasicScaffold> {
-  Observer observerAlert() {
-    return Observer(builder: (_) => showAlert());
+  Observer observerAlert(UiStore uiStore) {
+    return Observer(builder: (_) => showAlert(uiStore));
   }
 
-  Widget showAlert() {
-    final UiStore uiStore = UiSingleton().uiStore();
-
+  Widget showAlert(UiStore uiStore) {
     if (uiStore.errorMessage == null) {
       return const SizedBox(
         height: 0,
@@ -64,10 +62,13 @@ class _BasicScaffoldState extends State<BasicScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final UiStore uiStore = InheritedProvider.of(context).uiStore;
+
     return Scaffold(
       appBar: widget.appBar,
       backgroundColor: widget.backgroundColor,
-      body: SingleChildScrollView(child: SafeArea(child: Column(children: <Widget>[observerAlert(), widget.body]))),
+      body: SingleChildScrollView(
+          child: SafeArea(child: Column(children: <Widget>[observerAlert(uiStore), widget.body]))),
       drawer: widget.drawer,
       floatingActionButton: widget.floatingActionButton,
     );
