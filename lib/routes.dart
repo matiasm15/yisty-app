@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yisty_app/screens/registration/registration_page.dart';
 
 import 'screens/home/index.dart';
 import 'screens/login/index.dart';
@@ -8,4 +9,5 @@ final Map<String, WidgetBuilder> appRoutes = <String, WidgetBuilder>{
   '/login': (BuildContext context) => const LoginPage(),
   '/home': (BuildContext context) => const HomePage(),
   '/scanner': (BuildContext context) => const ScannerPage(),
+  '/registration': (BuildContext context) => const RegistrationPage(),
 };
