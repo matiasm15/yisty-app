@@ -13,7 +13,7 @@ class RegistrationPage extends StatelessWidget {
       body: Column(children: <Widget>[
         Container(
           child: Image.asset('assets/logo.png'),
-          padding: const EdgeInsets.only(left: 10,  right: 10, top: 15),
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
         ),
         const Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: RegistrationForm())
       ]),

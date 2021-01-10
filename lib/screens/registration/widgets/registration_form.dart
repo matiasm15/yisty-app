@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:html';
 
 import 'package:yisty_app/widgets/design/loading_button.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -22,13 +21,12 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
 
-  String _email, _password, _passwordRepeat, _selected;
+  String _email, _password, _userName, _passwordRepeat, _restriction;
 
   // get data restriction back
   List<S2Choice<int>> restriction = [
     S2Choice<int>(value: 1, title: 'Vegetariano'),
-    S2Choice<int>(value: 2, title: 'Vegano'),
-    S2Choice<int>(value: 3, title: 'Celiaco'),
+    S2Choice<int>(value: 2, title: 'Vegano')
   ];
 
   final _formKey = GlobalKey<FormState>();
@@ -48,6 +46,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
   void _passwordRepeatChanged(String value) {
     setState(() {
       _passwordRepeat = value;
+    });
+  }
+
+  void _userNameChanged(String value) {
+    setState(() {
+      _userName = value;
     });
   }
 
@@ -76,14 +80,26 @@ class _RegistrationFormState extends State<RegistrationForm> {
     return null;
   }
 
+  String _userNameValidator(String value) {
+    if(value.isEmpty) {
+      return 'El usuario no puede ser vacío';
+    }
+
+    if(value.length < 8 && value.length > 25) {
+      return 'El usuario debe tener entre 8 y 25 caracteres';
+    }
+
+    return null;
+  }
+
   String _comparePassword(String value) {
 
     if(value.isEmpty) {
-      return 'El contraseña no puede ser vacío';
+      return 'La contraseña no puede ser vacío';
     }
 
     if(!identical(_password, value)) {
-      return 'El contraseña debe coincidir';
+      return 'La contraseña debe coincidir';
     }
 
     return null;
@@ -98,7 +114,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   void _fromLoginPage() {
-    Navigator.pushReplacementNamed(context, '/login');
+    Navigator.of(context).pop();
   }
 
    void _formSubmitted(RoundedLoadingButtonController controller) {
@@ -111,8 +127,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
       Timer(const Duration(seconds: 3), () {
 
-        if(_selected == null || _selected.isEmpty) {
-          uiStore.setErrorMessage("Debe selecionar una restricción");
+        if(_restriction == null || _restriction.isEmpty) {
+          uiStore.setErrorMessage("Debe seleccionar una restricción");
         }
         // first send data to back
         // Here message success then It goes /login
@@ -136,8 +152,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
               padding: const EdgeInsets.only(bottom: 15),
               child: Focus(
                 child: TextFormField(
-                  enableSuggestions: false,
-                  autocorrect: false,
+                  enableSuggestions: true,
+                  autocorrect: true,
                   obscureText: false,
                   onChanged: _emailChanged,
                   validator: _emailValidator,
@@ -150,8 +166,22 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Focus(
                   child: TextFormField(
-                    enableSuggestions: false,
-                    autocorrect: false,
+                    enableSuggestions: true,
+                    autocorrect: true,
+                    obscureText: true,
+                    onChanged: _userNameChanged,
+                    validator: _userNameValidator,
+                    decoration: const InputDecoration(hintText: 'Usuario', icon: Icon(Icons.person)),
+                  ),
+                  onFocusChange: _focusChanged,
+                )
+            ),
+            Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Focus(
+                  child: TextFormField(
+                    enableSuggestions: true,
+                    autocorrect: true,
                     obscureText: true,
                     onChanged: _passwordChanged,
                     validator: _passwordValidator,
@@ -164,8 +194,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Focus(
                   child: TextFormField(
-                    enableSuggestions: false,
-                    autocorrect: false,
+                    enableSuggestions: true,
+                    autocorrect: true,
                     obscureText: true,
                     onChanged: _passwordRepeatChanged,
                     validator: _comparePassword,
@@ -176,9 +206,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
             ),
             Container(
               child: SmartSelect.single(
-                  value: _selected,
+                  value: _restriction,
                   choiceItems: restriction,
-                  modalTitle: 'Restrición Alimenticia',
+                  modalTitle: 'Restricción Alimenticia',
                   placeholder: 'Selecionar',
                   modalStyle: const S2ModalStyle(
                     backgroundColor: Colors.yellow,
@@ -199,7 +229,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       )
                     )
                   ),
-                  onChange: (state) => setState(()  => _selected = state.title),
+                  onChange: (state) => setState(()  => _restriction = state.title),
               ),
             ),
           ],
@@ -208,7 +238,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
           width: double.infinity,
           height: 40,
           child: LoadingButton(
-            text: 'Registar',
+            text: 'Registrar',
             onPressed: _formSubmitted,
           )
         ),
@@ -216,7 +246,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
           width: double.infinity,
           height: 60,
           child: TextButton(
-            child: const Text('¿Tenes una cuenta?'),
+            child: const Text(
+                '¿Tenés una cuenta?',
+                style: TextStyle(color: Colors.grey),
+            ),
             onPressed: _fromLoginPage,
           ),
         )
