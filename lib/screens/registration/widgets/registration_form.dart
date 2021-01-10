@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:html';
 
 import 'package:yisty_app/widgets/design/loading_button.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
