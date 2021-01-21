@@ -85,8 +85,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
       return 'El usuario no puede ser vacío';
     }
 
-    if(value.length < 8 && value.length > 25) {
-      return 'El usuario debe tener entre 8 y 25 caracteres';
+    if(value.length > 40) {
+      return 'El nombre debe tener máximo 25 caracteres';
     }
 
     return null;
@@ -98,7 +98,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       return 'La contraseña no puede ser vacío';
     }
 
-    if(!identical(_password, value)) {
+    if(_password != value) {
       return 'La contraseña debe coincidir';
     }
 
@@ -129,9 +129,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
         if(_restriction == null || _restriction.isEmpty) {
           uiStore.setErrorMessage("Debe seleccionar una restricción");
+        } else {
+          // first send data to back
+          // Here message success then It goes /login
         }
-        // first send data to back
-        // Here message success then It goes /login
         controller.reset();
       });
 
@@ -168,10 +169,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   child: TextFormField(
                     enableSuggestions: true,
                     autocorrect: true,
-                    obscureText: true,
                     onChanged: _userNameChanged,
                     validator: _userNameValidator,
-                    decoration: const InputDecoration(hintText: 'Usuario', icon: Icon(Icons.person)),
+                    decoration: const InputDecoration(hintText: 'Nombre', icon: Icon(Icons.person)),
                   ),
                   onFocusChange: _focusChanged,
                 )
@@ -180,8 +180,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Focus(
                   child: TextFormField(
-                    enableSuggestions: true,
-                    autocorrect: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     obscureText: true,
                     onChanged: _passwordChanged,
                     validator: _passwordValidator,
@@ -194,8 +194,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Focus(
                   child: TextFormField(
-                    enableSuggestions: true,
-                    autocorrect: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     obscureText: true,
                     onChanged: _passwordRepeatChanged,
                     validator: _comparePassword,
