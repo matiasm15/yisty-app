@@ -2,6 +2,9 @@
 
 A new Flutter project.
 
+## Instalacion
+1. Generar el archivo `.env` con las variables de entorno de tu local. Hay un ejemplo en `.env.example`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

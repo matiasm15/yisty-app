@@ -7,11 +7,12 @@ import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/services/rest_client/api_response.dart';
 
 class RestClient {
-  RestClient({String accessToken}) {
+  RestClient({String accessToken, String apiUrl}) {
+    _apiUrl = apiUrl;
     authHeaders = <String, String>{'Authorization': accessToken};
   }
-  
-  final String _baseUrl = 'http://192.168.0.4:3030/';
+
+  String _apiUrl;
   Map<String, String> authHeaders;
 
   set accessToken(String accessToken) {
@@ -21,7 +22,7 @@ class RestClient {
   Future<ApiResponse> get(String url) async {
     try {
       final http.Response response = await http.get(
-        _baseUrl + url,
+        _apiUrl + url,
         headers: authHeaders,
       );
 
@@ -35,7 +36,7 @@ class RestClient {
   Future<ApiResponse> post(String url, {dynamic body, Map<String, String> headers}) async {
     try {
       final http.Response response = await http.post(
-        _baseUrl + url,
+        _apiUrl + url,
         body: body,
         headers: headers ?? authHeaders,
       );
@@ -50,7 +51,7 @@ class RestClient {
   Future<ApiResponse> put(String url, dynamic body) async {
     try {
       final http.Response response = await http.put(
-        _baseUrl + url,
+        _apiUrl + url,
         body: body,
         headers: authHeaders,
       );
