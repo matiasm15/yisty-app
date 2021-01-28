@@ -1,17 +1,19 @@
 class User {
-  User({this.id, this.name, this.email, this.token});
+  User({this.id, this.fullName, this.email, this.accessToken, this.active});
 
-  factory User.fromJson(Map<String, dynamic> responseData) {
+  factory User.fromJson(Map<String, dynamic> responseData, String accessToken) {
     return User(
-      id: responseData['id'] as int,
-      name: responseData['name'] as String,
-      email: responseData['email'] as String,
-      token: responseData['token'] as String,
+        id: responseData['id'] as int,
+        fullName: responseData['full_name'] as String,
+        email: responseData['email'] as String,
+        active: responseData['active'] as bool,
+        accessToken: accessToken
     );
   }
 
   int id;
-  String name;
+  String fullName;
   String email;
-  String token;
+  String accessToken;
+  bool active;
 }

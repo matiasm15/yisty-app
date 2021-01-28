@@ -11,9 +11,12 @@ class MenuDrawer extends StatelessWidget {
   }
 
   Widget showDrawerHeader(ThemeData theme, UiStore uiStore) {
+    // Uso los null operator para no que no tire error cuando se esta deslogueando
+    // entre que se borro el usuario de la memoria y esta haciendo la redireccion al login.
+    // TODO: esta bien hecho o habria que redirigir al login cuando user es null?
     return UserAccountsDrawerHeader(
-      accountName: Text(uiStore.user.name),
-      accountEmail: Text(uiStore.user.email),
+      accountName: Text(uiStore.user?.fullName ?? ''),
+      accountEmail: Text(uiStore.user?.email ?? ''),
       currentAccountPicture: ClipRRect(
         borderRadius: BorderRadius.circular(110),
         child: Image.asset(
@@ -29,7 +32,7 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UiStore uiStore = InheritedProvider.of(context).uiStore;
+    final InheritedProvider provider = InheritedProvider.of(context);
     final ThemeData theme = Theme.of(context);
 
     return Drawer(
@@ -40,7 +43,7 @@ class MenuDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          observerDrawerHeader(theme, uiStore),
+          observerDrawerHeader(theme, provider.uiStore),
           ListTile(
             leading: const Icon(Icons.list),
             title: const Text('Historial'),
@@ -60,7 +63,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Cerrar sesión'),
             onTap: () {
-              uiStore
+              provider
                   .logoutUser()
                   .then((_) => Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
             },
