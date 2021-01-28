@@ -10,21 +10,25 @@ class UiStore = _UiStore with _$UiStore;
 
 abstract class _UiStore with Store {
   @observable
-  User user;
+  User _user;
 
   @observable
   String errorMessage;
 
-  @action
-  Future<User> loadUser() async {
-    user = await UserPersistence().getUser();
-
-    return user;
+  User get user {
+    return _user;
   }
 
   @action
-  Future<User> loginUser(Map<String, dynamic> responseData) async {
-    user = User.fromJson(responseData);
+  Future<User> loadUser() async {
+    _user = await UserPersistence().getUser();
+
+    return _user;
+  }
+
+  @action
+  Future<User> loginUser(User user) async {
+    _user = user;
 
     await UserPersistence().saveUser(user);
 
@@ -33,7 +37,7 @@ abstract class _UiStore with Store {
 
   @action
   Future<bool> logoutUser() async {
-    user = null;
+    _user = null;
 
     return UserPersistence().removeUser();
   }
