@@ -58,11 +58,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String _passwordValidator(String value) {
 
     if(value.isEmpty) {
-      return 'La contraseña no puede ser vacia';
+      return 'La contraseña no puede ser vacía';
     }
 
     if(value.length < 8) {
-      return 'La contraseña debe tener minímo 8 caracteres';
+      return 'La contraseña debe tener mínimo 8 caracteres';
     }
     
     return  null;
@@ -86,7 +86,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
 
     if(value.length > 40) {
-      return 'El nombre debe tener máximo 25 caracteres';
+      return 'El nombre debe tener máximo 40 caracteres';
     }
 
     return null;
@@ -95,7 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String _comparePassword(String value) {
 
     if(value.isEmpty) {
-      return 'La contraseña no puede ser vacío';
+      return 'La contraseña no puede ser vacía';
     }
 
     if(_password != value) {
