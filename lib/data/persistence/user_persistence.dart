@@ -8,9 +8,9 @@ class UserPersistence {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('id', user.id);
-    prefs.setString('fullName', user.fullName);
+    prefs.setString('name', user.name);
     prefs.setString('email', user.email);
-    prefs.setString('accessToken', user.accessToken);
+    prefs.setString('token', user.token);
 
     return true;
   }
@@ -25,21 +25,16 @@ class UserPersistence {
     }
 
     return User(
-        id: id,
-        fullName: prefs.getString('fullName'),
-        email: prefs.getString('email'),
-        accessToken: prefs.getString('accessToken'),
-        active: prefs.getBool('active'));
+        id: id, name: prefs.getString('name'), email: prefs.getString('email'), token: prefs.getString('token'));
   }
 
   Future<bool> removeUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.remove('id');
-    prefs.remove('fullName');
+    prefs.remove('name');
     prefs.remove('email');
-    prefs.remove('active');
-    prefs.remove('accessToken');
+    prefs.remove('token');
 
     return true;
   }
@@ -47,6 +42,6 @@ class UserPersistence {
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString('accessToken');
+    return prefs.getString('token');
   }
 }

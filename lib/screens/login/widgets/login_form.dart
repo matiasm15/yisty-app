@@ -1,11 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
-import 'package:yisty_app/models/user.dart';
 import 'package:yisty_app/screens/registration/index.dart';
-import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:yisty_app/widgets/design/loading_button.dart';
 
@@ -48,24 +49,23 @@ class _LoginFormState extends State<LoginForm> {
   void _formSubmitted(RoundedLoadingButtonController controller) {
     FocusScope.of(context).unfocus();
 
-    final InheritedProvider provider = InheritedProvider.of(context);
-    final UiStore uiStore = provider.uiStore;
+    final UiStore uiStore = InheritedProvider.of(context).uiStore;
     uiStore.removeErrorMessage();
 
     // Validate returns true if the form is valid, otherwise false.
     if (_formKey.currentState.validate()) {
-      provider.services.users.authenticate(
-          email, password
-      ).then(
-              (User user) => provider.loginUser(user)
-      ).then(
-              (_) => Navigator.pushReplacementNamed(context, '/home')
-      ).catchError(
-        (Object _) => provider.uiStore.setErrorMessage('El email o la contraseña son inválidas.'),
-        test: (Object e) => e is UnauthorisedException
-      ).whenComplete(
-              () => controller.reset()
-      );
+      Timer(const Duration(seconds: 3), () {
+        if (email == 'admin@admin.com') {
+          const String json = '{"id": 1, "name": "Usuario", "email": "admin@admin.com", "token": "token"}';
+          uiStore
+              .loginUser(jsonDecode(json) as Map<String, dynamic>)
+              .then((_) => Navigator.pushReplacementNamed(context, '/home'));
+        } else {
+          uiStore.setErrorMessage('El email o la contraseña son inválidas.');
+        }
+
+        controller.reset();
+      });
     } else {
       controller.reset();
     }

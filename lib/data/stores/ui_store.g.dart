@@ -9,18 +9,18 @@ part of 'ui_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UiStore on _UiStore, Store {
-  final _$_userAtom = Atom(name: '_UiStore._user');
+  final _$userAtom = Atom(name: '_UiStore.user');
 
   @override
-  User get _user {
-    _$_userAtom.reportRead();
-    return super._user;
+  User get user {
+    _$userAtom.reportRead();
+    return super.user;
   }
 
   @override
-  set _user(User value) {
-    _$_userAtom.reportWrite(value, super._user, () {
-      super._user = value;
+  set user(User value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
     });
   }
 
@@ -49,8 +49,8 @@ mixin _$UiStore on _UiStore, Store {
   final _$loginUserAsyncAction = AsyncAction('_UiStore.loginUser');
 
   @override
-  Future<User> loginUser(User user) {
-    return _$loginUserAsyncAction.run(() => super.loginUser(user));
+  Future<User> loginUser(Map<String, dynamic> responseData) {
+    return _$loginUserAsyncAction.run(() => super.loginUser(responseData));
   }
 
   final _$logoutUserAsyncAction = AsyncAction('_UiStore.logoutUser');
@@ -87,6 +87,7 @@ mixin _$UiStore on _UiStore, Store {
   @override
   String toString() {
     return '''
+user: ${user},
 errorMessage: ${errorMessage}
     ''';
   }
