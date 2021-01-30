@@ -70,6 +70,10 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
+  void _formRegistration() {
+    Navigator.of(context).pushNamed('/registration');
+  }
+
   String _emailValidator(String value) {
     if (value.isEmpty) {
       return 'El email no puede ser vacío';
@@ -131,7 +135,18 @@ class _LoginFormState extends State<LoginForm> {
             child: LoadingButton(
               text: 'Iniciar sesión',
               onPressed: _formSubmitted,
-            ))
+            )),
+        Container(
+          width: double.infinity,
+          height: 40,
+          child: TextButton(
+              child: const Text(
+                'Registrate',
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: _formRegistration,
+            ),
+          ),
       ]),
     );
   }
