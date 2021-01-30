@@ -14,12 +14,14 @@ import 'package:yisty_app/widgets/design/loading_page.dart';
 
 import 'routes.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await FlutterConfig.loadEnvVariables();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) => runApp(YistyApp()));
+  SystemChrome.setPreferredOrientations(
+      <DeviceOrientation>[DeviceOrientation.portraitUp]
+  ).then((_) => runApp(YistyApp()));
 }
 
 class YistyApp extends StatelessWidget {

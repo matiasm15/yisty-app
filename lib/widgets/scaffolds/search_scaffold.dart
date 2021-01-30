@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:yisty_app/models/product.dart';
+import 'package:yisty_app/screens/search/product_search.dart';
 import 'package:yisty_app/widgets/scaffolds/basic_scaffold.dart';
 import 'package:yisty_app/widgets/scaffolds/menu_drawer.dart';
 
 @immutable
-class SearchScaffold extends StatefulWidget {
+class SearchScaffold extends StatelessWidget {
   const SearchScaffold({Key key, this.body, this.floatingActionButton}) : super(key: key);
 
   final Widget body;
   final Widget floatingActionButton;
 
   @override
-  _SearchScaffoldState createState() => _SearchScaffoldState();
-}
-
-class _SearchScaffoldState extends State<SearchScaffold> {
-  bool _isSearching = false;
-
-  void _openSearchBox() {
-    setState(() {
-      _isSearching = true;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BasicScaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            IconButton(onPressed: () => showSearch<Product>(context: context, delegate: ProductSearch()), icon: const Icon(Icons.search))
+          ],
             title: Row(
           children: <Widget>[
             Padding(
@@ -34,8 +26,8 @@ class _SearchScaffoldState extends State<SearchScaffold> {
             const Text('Yisty'),
           ],
         )),
-        body: widget.body,
-        floatingActionButton: widget.floatingActionButton,
+        body: body,
+        floatingActionButton: floatingActionButton,
         drawer: MenuDrawer());
   }
 }
