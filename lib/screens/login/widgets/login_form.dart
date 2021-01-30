@@ -4,7 +4,6 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/user.dart';
-import 'package:yisty_app/screens/registration/index.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:yisty_app/widgets/design/loading_button.dart';

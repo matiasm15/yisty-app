@@ -29,7 +29,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     S2Choice<int>(value: 2, title: 'Vegano')
   ];
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _emailChanged(String value) {
     setState(() {
@@ -58,11 +58,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String _passwordValidator(String value) {
 
     if(value.isEmpty) {
-      return 'La contraseña no puede ser vacia';
+      return 'La contraseña no puede ser vacía';
     }
 
     if(value.length < 8) {
-      return 'La contraseña debe tener minímo 8 caracteres';
+      return 'La contraseña debe tener mínimo 8 caracteres';
     }
     
     return  null;
@@ -86,7 +86,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
 
     if(value.length > 40) {
-      return 'El nombre debe tener máximo 25 caracteres';
+      return 'El nombre debe tener máximo 40 caracteres';
     }
 
     return null;
@@ -95,7 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String _comparePassword(String value) {
 
     if(value.isEmpty) {
-      return 'La contraseña no puede ser vacío';
+      return 'La contraseña no puede ser vacía';
     }
 
     if(_password != value) {
@@ -128,7 +128,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       Timer(const Duration(seconds: 3), () {
 
         if(_restriction == null || _restriction.isEmpty) {
-          uiStore.setErrorMessage("Debe seleccionar una restricción");
+          uiStore.setErrorMessage('Debe seleccionar una restricción');
         } else {
           // first send data to back
           // Here message success then It goes /login
@@ -205,6 +205,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 )
             ),
             Container(
+              // ignore: always_specify_types
               child: SmartSelect.single(
                   value: _restriction,
                   choiceItems: restriction,
@@ -229,6 +230,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       )
                     )
                   ),
+                  // ignore: always_specify_types
                   onChange: (state) => setState(()  => _restriction = state.title),
               ),
             ),
