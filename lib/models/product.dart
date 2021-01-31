@@ -14,4 +14,9 @@ class Product {
   String name;
   String image;
   String barcode;
+
+  // TODO
+  int shopsQuantity() {
+    return id - 1;
+  }
 }
