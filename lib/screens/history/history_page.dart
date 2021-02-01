@@ -52,7 +52,7 @@ class HistoryPage extends StatelessWidget {
         tooltip: 'Increment',
         child: const Icon(Icons.camera_alt)
       ),
-        title: const Text('Historial')
+      title: const Text('Historial')
     );
   }
 }

@@ -67,7 +67,7 @@ class ProductSearch extends SearchDelegate<Product> {
     final ProductService productService = provider.services.products;
 
     return FutureBuilder<List<Product>>(
-      future: productService.list(q: query),
+      future: productService.list(<String, String>{'name[\$iLike]': '%$query%'}),
       builder: (_ , AsyncSnapshot<List<Product>> snapshot) {
         if (snapshot.hasError) {
           if (snapshot.error is AppException) {
