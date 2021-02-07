@@ -11,15 +11,15 @@ import 'package:yisty_app/widgets/products/product_list.dart';
 class ProductSearch extends SearchDelegate<Product> {
   @override
   List<Widget> buildActions(BuildContext context) {
-    if (query == '') {
+    if (query.isEmpty) {
       return <Widget>[];
-    } else {
-      return <Widget>[
-        IconButton(icon: const Icon(Icons.close), onPressed: () {
-          query = '';
-        })
-      ];
     }
+
+    return <Widget>[
+      IconButton(icon: const Icon(Icons.close), onPressed: () {
+        query = '';
+      })
+    ];
   }
 
   @override

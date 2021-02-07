@@ -33,14 +33,14 @@ class ProductPreview extends StatelessWidget {
 
     if (shopsQuantity == 0) {
       return Container();
-    } else {
-      return Row(
-          children: <Widget>[
-            const Icon(Icons.local_offer, size: 18, color: Colors.blueAccent),
-            Text(' $shopsQuantity', style: const TextStyle(fontSize: 18, color: Colors.blueAccent, fontWeight: FontWeight.bold))
-          ]
-      );
     }
+
+    return Row(
+      children: <Widget>[
+        const Icon(Icons.local_offer, size: 18, color: Colors.blueAccent),
+        Text(' $shopsQuantity', style: const TextStyle(fontSize: 18, color: Colors.blueAccent, fontWeight: FontWeight.bold))
+      ]
+    );
   }
 
   Widget buildInfo() {
@@ -49,20 +49,23 @@ class ProductPreview extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(child: Text(
-          product.name,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ), margin: const EdgeInsets.only(bottom: 2),),
-        Text(
-                product.barcode,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.normal)
-            )])
-        ,
-       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              child: Text(
+                product.name,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              margin: const EdgeInsets.only(bottom: 2)
+            ),
+            Text(
+              product.barcode,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.normal)
+            )
+          ]
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             buildMatching(),

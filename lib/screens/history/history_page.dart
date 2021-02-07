@@ -26,9 +26,9 @@ class HistoryPage extends StatelessWidget {
               return AlertPage(
                 message: snapshot.error.toString()
               );
-            } else {
-              throw snapshot.error;
             }
+
+            throw snapshot.error;
           }
 
           if (snapshot.hasData) {
@@ -42,9 +42,9 @@ class HistoryPage extends StatelessWidget {
             }
 
             return HistoryList(userScans: userScans);
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
+
+          return const Center(child: CircularProgressIndicator());
         }
       ),
       floatingActionButton: FloatingActionButton(

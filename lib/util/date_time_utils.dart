@@ -6,17 +6,20 @@ class DateTimeUtils {
     final DateTime today = DateTime(now.year, now.month, now.day);
     final DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
     final DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
+    String ago;
 
     if (time == today) {
-      return 'Hoy';
+      ago = 'Hoy';
     } else if (time == yesterday) {
-      return 'Ayer';
+      ago = 'Ayer';
     } else if (time == tomorrow) {
-      return 'Mañana';
+      ago = 'Mañana';
     } else {
       final String agoFormat = timeago.format(time, locale: 'es');
 
-      return '${agoFormat[0].toUpperCase()}${agoFormat.substring(1)}';
+      ago = '${agoFormat[0].toUpperCase()}${agoFormat.substring(1)}';
     }
+
+    return ago;
   }
 }
