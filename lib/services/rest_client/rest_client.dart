@@ -16,7 +16,11 @@ class RestClient {
   Map<String, String> authHeaders;
 
   set accessToken(String accessToken) {
-    authHeaders = <String, String>{'Authorization': 'Bearer $accessToken'};
+    if (accessToken == null) {
+      authHeaders = null;
+    } else {
+      authHeaders = <String, String>{'Authorization': 'Bearer $accessToken'};
+    }
   }
 
   Future<ApiResponse> get(String url) async {

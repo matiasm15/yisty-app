@@ -48,14 +48,14 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.list),
             title: const Text('Historial'),
             onTap: () {
-              Navigator.pushNamed(context, '/scanner');
+              Navigator.popAndPushNamed(context, '/history');
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuración'),
             onTap: () {
-              Navigator.pushNamed(context, '/scanner');
+              Navigator.popAndPushNamed(context, '/scanner');
             },
           ),
           const Divider(),

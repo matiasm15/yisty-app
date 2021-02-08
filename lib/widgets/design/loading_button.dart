@@ -14,7 +14,7 @@ class LoadingButton extends StatefulWidget {
 class _LoadingButtonState extends State<LoadingButton> {
   final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
 
-  void _doSomething() async {
+  Future<void> _doSomething() async {
     widget.onPressed(_btnController);
   }
 

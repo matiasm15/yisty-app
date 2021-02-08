@@ -25,6 +25,14 @@ class InheritedProvider extends InheritedWidget {
     return uiStore.logoutUser();
   }
 
+  Future<User> loadUser() async {
+    final User user = await uiStore.loadUser();
+
+    services.loginUser(user);
+
+    return user;
+  }
+
   @override
   bool updateShouldNotify(InheritedProvider oldWidget) => uiStore != oldWidget.uiStore || services != oldWidget.services;
 

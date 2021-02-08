@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/widgets/design/alert_box.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 
 @immutable
@@ -32,43 +32,32 @@ class _BasicScaffoldState extends State<BasicScaffold> {
       );
     }
 
-    return Container(
-      color: Theme.of(context).errorColor,
-      width: double.infinity,
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.error_outline),
-          ),
-          Expanded(
-            child: AutoSizeText(
-              uiStore.errorMessage,
-              maxLines: 3,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => uiStore.removeErrorMessage(),
-            ),
-          )
-        ],
-      ),
+    return AlertBox(
+        message: uiStore.errorMessage,
+        onClose: () => uiStore.removeErrorMessage()
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final UiStore uiStore = InheritedProvider.of(context).uiStore;
+    final EdgeInsets padding = MediaQuery.of(context).padding;
 
     return Scaffold(
       appBar: widget.appBar,
       backgroundColor: widget.backgroundColor,
-      body: SingleChildScrollView(
-          child: SafeArea(child: Column(children: <Widget>[observerAlert(uiStore), widget.body]))),
+      body: SafeArea(child: SingleChildScrollView(
+              child: Column(
+                  children: <Widget>[
+                    observerAlert(uiStore),
+                    Container(
+                      height: MediaQuery.of(context).size.height - padding.top - padding.bottom - kToolbarHeight,
+                      child: widget.body
+                    )
+                  ]
+              )
+          )
+      ),
       drawer: widget.drawer,
       floatingActionButton: widget.floatingActionButton,
     );
