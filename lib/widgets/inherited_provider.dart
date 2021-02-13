@@ -26,15 +26,22 @@ class InheritedProvider extends InheritedWidget {
   }
 
   Future<User> loadUser() async {
-    final User user = await uiStore.loadUser();
+    if (uiStore.user == null) {
+      final User user = await uiStore.loadUser();
+      services.loginUser(user);
 
-    services.loginUser(user);
-
-    return user;
+      return user;
+    } else {
+      return Future<User>.value(uiStore.user);
+    }
   }
 
   @override
-  bool updateShouldNotify(InheritedProvider oldWidget) => uiStore != oldWidget.uiStore || services != oldWidget.services;
+  bool updateShouldNotify(InheritedProvider oldWidget) {
+    return uiStore != oldWidget.uiStore || services != oldWidget.services;
+  }
 
-  static InheritedProvider of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedProvider>();
+  static InheritedProvider of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<InheritedProvider>();
+  }
 }

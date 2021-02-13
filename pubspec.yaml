@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   auto_size_text: ^2.1.0
+  barcode: ^1.17.1
   barcode_scan: ^3.0.1
   cupertino_icons: ^1.0.0
   email_validator: ^1.0.5
@@ -29,15 +30,17 @@ dependencies:
     sdk: flutter
   flutter_config: ^1.0.8
   flutter_mobx: ^1.1.0+2
+  flutter_svg: ^0.20.0-nullsafety.3
   http: ^0.12.2
   image_picker: ^0.6.7+7
   mobx: ^1.2.1+4
   package_info: ^0.4.3
   rounded_loading_button: ^1.0.0
+  share: ^0.6.5+4
   shared_preferences: ^0.5.12+4
   smart_select: ^4.3.2
   timeago: ^2.0.29
-  url_launcher: ^5.5.0
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   analyzer: ^0.41.1
@@ -59,6 +62,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

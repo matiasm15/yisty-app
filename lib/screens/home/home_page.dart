@@ -11,8 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body:
-        Column(
+      builder: (_) => Column(
           children: const <Widget>[
             Subtitle(text: 'NOTICIAS')
         ]

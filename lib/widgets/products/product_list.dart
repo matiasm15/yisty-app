@@ -20,8 +20,7 @@ class ProductList extends StatelessWidget {
         itemBuilder: (BuildContext context, int i) {
           return ProductPreview(
             profile: profile,
-            product: products[i],
-            onTap: onTap,
+            product: products[i]
           );
         }
     );

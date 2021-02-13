@@ -9,17 +9,16 @@ import 'package:yisty_app/widgets/design/subtitle.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 
 class HistoryList extends StatelessWidget {
-  const HistoryList({Key key, this.userScans, this.onTap}) : super(key: key);
+  const HistoryList({Key key, this.userScans}) : super(key: key);
 
   final List<UserScan> userScans;
-  final Function onTap;
 
   Widget buildListByDate({List<UserScan> scansByDate, String date, Profile profile}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Subtitle(text: date, type: SubtitleType.h1),
-        UserScansList(userScans: scansByDate, profile: profile, onTap: onTap)
+        Subtitle(text: date, type: SubtitleType.h2),
+        UserScansList(userScans: scansByDate, profile: profile)
       ],
     );
   }
