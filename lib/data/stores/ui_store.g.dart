@@ -39,6 +39,36 @@ mixin _$UiStore on _UiStore, Store {
     });
   }
 
+  final _$successMessageAtom = Atom(name: '_UiStore.successMessage');
+
+  @override
+  String get successMessage {
+    _$successMessageAtom.reportRead();
+    return super.successMessage;
+  }
+
+  @override
+  set successMessage(String value) {
+    _$successMessageAtom.reportWrite(value, super.successMessage, () {
+      super.successMessage = value;
+    });
+  }
+
+  final _$warningMessageAtom = Atom(name: '_UiStore.warningMessage');
+
+  @override
+  String get warningMessage {
+    _$warningMessageAtom.reportRead();
+    return super.warningMessage;
+  }
+
+  @override
+  set warningMessage(String value) {
+    _$warningMessageAtom.reportWrite(value, super.warningMessage, () {
+      super.warningMessage = value;
+    });
+  }
+
   final _$loadUserAsyncAction = AsyncAction('_UiStore.loadUser');
 
   @override
@@ -85,9 +115,55 @@ mixin _$UiStore on _UiStore, Store {
   }
 
   @override
+  void setSuccessMessage(String message) {
+    final _$actionInfo = _$_UiStoreActionController.startAction(
+        name: '_UiStore.setSuccessMessage');
+    try {
+      return super.setSuccessMessage(message);
+    } finally {
+      _$_UiStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeSuccessMessage() {
+    final _$actionInfo = _$_UiStoreActionController.startAction(
+        name: '_UiStore.removeSuccessMessage');
+    try {
+      return super.removeSuccessMessage();
+    } finally {
+      _$_UiStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setWarningMessage(String message) {
+    final _$actionInfo = _$_UiStoreActionController.startAction(
+        name: '_UiStore.setWarningMessage');
+    try {
+      return super.setWarningMessage(message);
+    } finally {
+      _$_UiStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeWarningMessage() {
+    final _$actionInfo = _$_UiStoreActionController.startAction(
+        name: '_UiStore.removeWarningMessage');
+    try {
+      return super.removeWarningMessage();
+    } finally {
+      _$_UiStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+successMessage: ${successMessage},
+warningMessage: ${warningMessage}
     ''';
   }
 }

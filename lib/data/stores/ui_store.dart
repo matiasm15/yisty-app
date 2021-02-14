@@ -15,6 +15,12 @@ abstract class _UiStore with Store {
   @observable
   String errorMessage;
 
+  @observable
+  String successMessage;
+
+  @observable
+  String warningMessage;
+
   User get user {
     return _user;
   }
@@ -50,5 +56,25 @@ abstract class _UiStore with Store {
   @action
   void removeErrorMessage() {
     errorMessage = null;
+  }
+
+  @action
+  void setSuccessMessage(String message) {
+    successMessage = message;
+  }
+
+  @action
+  void removeSuccessMessage(){
+    successMessage = null;
+  }
+
+  @action
+  void setWarningMessage(String message) {
+    warningMessage = message;
+  }
+
+  @action
+  void removeWarningMessage(){
+    warningMessage = null;
   }
 }

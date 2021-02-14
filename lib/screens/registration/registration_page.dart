@@ -14,8 +14,8 @@ class RegistrationPage extends StatelessWidget {
         Container(
           child: Image.asset(
             'assets/logo.png',
-            height: 250,
-            width: 250,
+            height: 200,
+            width: 200,
           ),
           padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
         ),
