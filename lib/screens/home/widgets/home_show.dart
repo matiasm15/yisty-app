@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:newsapi/newsapi.dart';
-import 'package:yisty_app/services/new_api_service.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/widgets/design/alert_page.dart';
 import 'package:yisty_app/widgets/design/empty_page.dart';
-import 'news_element_show.dart';
+import 'package:yisty_app/screens/home/widgets/news_element_show.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 
 @immutable
 class HomeShow extends StatefulWidget {
@@ -16,7 +16,8 @@ class HomeShow extends StatefulWidget {
 
 class _HomeShowState extends State<HomeShow> {
 
-  NewsApiService newsApiService = NewsApiService();
+  Future<List<Article>> _future;
+  String preference;
 
   Widget buildLoading() {
     return Center(
@@ -24,10 +25,9 @@ class _HomeShowState extends State<HomeShow> {
         padding: const EdgeInsets.all(15.0),
           child: Column (
             mainAxisAlignment: MainAxisAlignment.center,
-            // ignore: prefer_const_literals_to_create_immutables
             children: <Widget> [
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                 const CircularProgressIndicator(
+                valueColor:  AlwaysStoppedAnimation<Color>(Colors.green),
                 strokeWidth: 6,
                 backgroundColor: Colors.white,
               )
@@ -44,10 +44,17 @@ class _HomeShowState extends State<HomeShow> {
     );
   }
 
+  @override
+  void didChangeDependencies() {
+    preference =InheritedProvider.of(context).uiStore.user.profile.name;
+    _future = InheritedProvider.of(context).services.newsApiService.getArticleResponseByEverything(preference, 'ar', 30, 'es');
+
+    super.didChangeDependencies();
+  }
+
   Widget buildList(BuildContext context) {
     return FutureBuilder<List<Article>>(
-      // cambiar la alberto cuando este las rectricciones
-      future: newsApiService.getArticleResponseByEverything('alberto', 'ar', 30, 'es'),
+      future: _future,
       builder: (_, AsyncSnapshot<List<Article>> snapshot) {
         if (snapshot.hasData) {
           final List<Article> news = snapshot.data;
@@ -56,9 +63,8 @@ class _HomeShowState extends State<HomeShow> {
             return buildNoResults();
           }
 
-          return SingleChildScrollView(
-            child: _showNews(context, news),
-          );
+          return _showNews(context, news);
+
         } else if (snapshot.hasError) {
           if(snapshot.error is AppException) {
             return AlertPage(message: snapshot.error.toString());
