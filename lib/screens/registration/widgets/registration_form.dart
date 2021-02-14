@@ -23,8 +23,9 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
 
-  String _email, _password, _fullName, _passwordRepeat, _preference;
+  String _email, _password, _fullName, _passwordRepeat;
   int _preferenceId;
+  Future<List<Preference>> _future;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -148,6 +149,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    final InheritedProvider provider = InheritedProvider.of(context);
+    final PreferenceService preferenceService = provider.services.preferenceService;
+
+    _future = preferenceService.getPreferences();
+
+    super.didChangeDependencies();
+  }
+
   Widget _buildEmail() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
@@ -235,10 +246,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   Widget _buildPreference(BuildContext context) {
-    final InheritedProvider provider = InheritedProvider.of(context);
-    final PreferenceService preferenceService = provider.services.preferenceService;
+
     return FutureBuilder<List<Preference>>(
-        future: preferenceService.getPreferences(),
+        future: _future,
         builder: (_, AsyncSnapshot<List<Preference>> snapshot) {
           if (snapshot.hasData) {
             final List<Preference> preferences = snapshot.data;
