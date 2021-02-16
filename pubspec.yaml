@@ -38,6 +38,8 @@ dependencies:
   smart_select: ^4.3.2
   timeago: ^2.0.29
   url_launcher: ^5.5.0
+  newsapi: ^1.0.9
+  webview_flutter: ^1.0.7
 
 dev_dependencies:
   analyzer: ^0.41.1

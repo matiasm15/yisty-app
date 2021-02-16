@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yisty_app/screens/home/widgets/home_show.dart';
 
-import 'package:yisty_app/widgets/design/subtitle.dart';
 import 'package:yisty_app/widgets/scaffolds/app_scaffold.dart';
 import 'package:yisty_app/widgets/scaffolds/menu_drawer.dart';
 
@@ -11,12 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body:
-        Column(
-          children: const <Widget>[
-            Subtitle(text: 'NOTICIAS')
-        ]
-      ),
+      body: const HomeShow(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/scanner'),
         tooltip: 'Increment',
