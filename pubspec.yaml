@@ -24,7 +24,6 @@ dependencies:
   auto_size_text: ^2.1.0
   barcode: ^1.17.1
   barcode_scan: ^3.0.1
-  cached_network_image: ^2.5.0
   cupertino_icons: ^1.0.0
   email_validator: ^1.0.5
   flutter:

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yisty_app/widgets/scaffolds/basic_scaffold.dart';
 
 // ignore: must_be_immutable
 class NewsShow extends StatefulWidget {
@@ -20,7 +21,7 @@ class _NewsShowState extends State<NewsShow> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BasicScaffold(
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
