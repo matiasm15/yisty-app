@@ -4,6 +4,7 @@ import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/widgets/design/alert_page.dart';
 import 'package:yisty_app/widgets/design/empty_widget.dart';
 import 'package:yisty_app/screens/home/widgets/news_element_show.dart';
+import 'package:yisty_app/widgets/design/loading_widget.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 
 @immutable
@@ -15,26 +16,7 @@ class HomeShow extends StatefulWidget {
 }
 
 class _HomeShowState extends State<HomeShow> {
-
   Future<List<Article>> _future;
-
-  Widget buildLoading() {
-    return Center(
-        child: Padding(
-        padding: const EdgeInsets.all(15.0),
-          child: Column (
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget> [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                strokeWidth: 6,
-                backgroundColor: Colors.white,
-              )
-            ],
-          ),
-        )
-    );
-  }
 
   Widget buildNoResults() {
     return const EmptyWidget(
@@ -70,9 +52,9 @@ class _HomeShowState extends State<HomeShow> {
           } else {
             throw snapshot.error;
           }
-        } else {
-          return buildLoading();
         }
+
+        return LoadingWidget();
       },
     );
   }
