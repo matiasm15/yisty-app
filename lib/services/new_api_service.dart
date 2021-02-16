@@ -6,18 +6,16 @@ class NewsApiService {
   final String apiKey;
   final NewsApi _newsApi = NewsApi();
 
-  Future<List<Article>> getArticleResponseByTopHeadLines (String search, String country, int pageSize, String language) async {
+  Future<List<Article>> getArticleResponseByTopHeadLines (String search) async {
       _newsApi.init(apiKey: apiKey);
       final ArticleResponse response =  await _newsApi.topHeadlines(
-        language: language,
+        language: 'es',
         q: search,
-        country: country,
-        pageSize: pageSize,
       );
       return response.articles;
   }
 
-  Future<List<Article>> getArticleResponseByEverything (String search, String country, int pageSize, String language) async {
+  Future<List<Article>> getArticleResponseByEverything (String search) async {
     _newsApi.init(apiKey: apiKey);
     final ArticleResponse response =  await _newsApi.everything(
       language: 'es',

@@ -17,7 +17,6 @@ class HomeShow extends StatefulWidget {
 class _HomeShowState extends State<HomeShow> {
 
   Future<List<Article>> _future;
-  String preference;
 
   Widget buildLoading() {
     return Center(
@@ -46,8 +45,8 @@ class _HomeShowState extends State<HomeShow> {
 
   @override
   void didChangeDependencies() {
-    preference =InheritedProvider.of(context).uiStore.user.profile.name;
-    _future = InheritedProvider.of(context).services.newsApiService.getArticleResponseByEverything(preference, 'ar', 30, 'es');
+    String preference =InheritedProvider.of(context).uiStore.user.profile.name;
+    _future = InheritedProvider.of(context).services.newsApiService.getArticleResponseByEverything(preference);
 
     super.didChangeDependencies();
   }
