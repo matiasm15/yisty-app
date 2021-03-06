@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:yisty_app/models/product.dart';
-import 'package:yisty_app/widgets/design/alert_page.dart';
-import 'package:yisty_app/services/product_service.dart';
-import 'package:yisty_app/services/rest_client/api_exceptions.dart';
-import 'package:yisty_app/widgets/design/empty_page.dart';
-import 'package:yisty_app/widgets/inherited_provider.dart';
+import 'package:yisty_app/screens/search/widgets/search_results.dart';
+import 'package:yisty_app/widgets/design/empty_widget.dart';
 import 'package:yisty_app/widgets/products/product_list.dart';
 
 class ProductSearch extends SearchDelegate<Product> {
@@ -44,16 +41,9 @@ class ProductSearch extends SearchDelegate<Product> {
   }
 
   Widget buildNoSearch() {
-    return const EmptyPage(
+    return const EmptyWidget(
       message: 'Escribe algo para empezar a buscar',
       icon: Icons.search
-    );
-  }
-
-  Widget buildNoResults() {
-    return const EmptyPage(
-        message: 'No se encontraron resultados para tu búsqueda',
-        icon: Icons.search_off_outlined
     );
   }
 
@@ -63,35 +53,7 @@ class ProductSearch extends SearchDelegate<Product> {
       return buildNoSearch();
     }
 
-    final InheritedProvider provider = InheritedProvider.of(context);
-    final ProductService productService = provider.services.products;
-
-    return FutureBuilder<List<Product>>(
-      future: productService.list(<String, String>{'name[\$iLike]': '%$query%'}),
-      builder: (_ , AsyncSnapshot<List<Product>> snapshot) {
-        if (snapshot.hasError) {
-          if (snapshot.error is AppException) {
-            return AlertPage(
-                message: snapshot.error.toString()
-            );
-          } else {
-            throw snapshot.error;
-          }
-        }
-
-        if (snapshot.hasData) {
-          final List<Product> products = snapshot.data;
-
-          if (products.isEmpty) {
-            return buildNoResults();
-          }
-
-          return _showProducts(context, products);
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
+    return SearchResults(query: query);
   }
 
   @override
@@ -105,8 +67,7 @@ class ProductSearch extends SearchDelegate<Product> {
 
   Widget _showProducts(BuildContext context, List<Product> products) {
     return ProductList(
-        products: products,
-        onTap: (Product product) => close(context, product)
+        products: products
     );
   }
 }

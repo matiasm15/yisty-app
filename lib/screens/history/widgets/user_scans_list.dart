@@ -5,11 +5,10 @@ import 'package:yisty_app/models/user_scan.dart';
 import 'package:yisty_app/widgets/products/product_preview.dart';
 
 class UserScansList extends StatelessWidget {
-  const UserScansList({Key key, this.userScans, this.profile, this.onTap}) : super(key: key);
+  const UserScansList({Key key, this.userScans, this.profile}) : super(key: key);
 
   final Profile profile;
   final List<UserScan> userScans;
-  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +21,7 @@ class UserScansList extends StatelessWidget {
           return ProductPreview(
             profile: profile,
             date: userScan.date,
-            product: userScan.product,
-            onTap: onTap,
+            product: userScan.product
           );
         }
     );

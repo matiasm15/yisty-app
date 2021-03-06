@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:yisty_app/models/product.dart';
 import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/screens/products/product_page.dart';
 
 class ProductPreview extends StatelessWidget {
-  const ProductPreview({Key key, @required this.product, @required this.profile, @required this.onTap, this.date}) : super(key: key);
+  const ProductPreview({Key key, @required this.product, @required this.profile, this.date}) : super(key: key);
 
   final Profile profile;
   final Product product;
   final DateTime date;
-  final Function onTap;
 
   Widget buildMatching() {
     if (profile.isPermitted(product)) {
@@ -88,15 +88,26 @@ class ProductPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: InkWell(child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 buildImage(),
                 Expanded(child: Container(child: buildInfo(), padding: const EdgeInsets.symmetric(horizontal: 10), height: 100,))
-            ],
-          )
-        ), onTap: () => null));
+              ],
+            )
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<ProductPage>(
+                builder: (BuildContext context) => ProductPage(product: product)
+              )
+            );
+          }
+        )
+    );
   }
 }

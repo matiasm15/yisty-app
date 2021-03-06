@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:yisty_app/screens/history/history_page.dart';
-import 'package:yisty_app/screens/home/index.dart';
-import 'package:yisty_app/screens/login/index.dart';
+import 'package:yisty_app/screens/home/home_page.dart';
+import 'package:yisty_app/screens/login/login_page.dart';
 import 'package:yisty_app/screens/registration/registration_page.dart';
-import 'package:yisty_app/screens/scanner/index.dart';
+import 'package:yisty_app/screens/scanner/scanner_page.dart';
 
 
 final Map<String, WidgetBuilder> appRoutes = <String, WidgetBuilder>{
