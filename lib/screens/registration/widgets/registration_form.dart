@@ -154,7 +154,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     final InheritedProvider provider = InheritedProvider.of(context);
     final PreferenceService preferenceService = provider.services.preferenceService;
 
-    _future = preferenceService.getPreferences();
+    _future ??= preferenceService.getPreferences();
 
     super.didChangeDependencies();
   }

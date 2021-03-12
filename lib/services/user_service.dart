@@ -26,7 +26,7 @@ class UserService extends BaseService {
   }
 
   // el valor de profileId tiene que definirlo bien actualmente asi lo dejamos seteado
-  Future<User> create(String email, String fullName, String password, int preferenceId) async {
+  Future<User> create({String email, String fullName, String password, int preferenceId}) async {
     final ApiResponse apiResponse = await client.post(
       'users',
       body: <String, Object> {
