@@ -51,8 +51,7 @@ class _LoginFormState extends State<LoginForm> {
 
     final InheritedProvider provider = InheritedProvider.of(context);
     final UiStore uiStore = provider.uiStore;
-    uiStore.removeMessage();
-    uiStore.removeAlertType();
+    uiStore.removeMessageAlertType();
 
     // Validate returns true if the form is valid, otherwise false.
     if (_formKey.currentState.validate()) {

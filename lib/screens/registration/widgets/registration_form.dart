@@ -122,8 +122,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     final InheritedProvider provider = InheritedProvider.of(context);
     final UiStore uiStore = provider.uiStore;
     final UserService userService = provider.services.users;
-    uiStore.removeMessage();
-    uiStore.removeAlertType();
+    uiStore.removeMessageAlertType();
 
     if (_formKey.currentState.validate()) {
         if(_preferenceId == null) {

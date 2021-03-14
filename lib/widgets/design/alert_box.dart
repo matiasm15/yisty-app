@@ -12,25 +12,43 @@ class AlertBox extends StatelessWidget {
   final AlertType alertType;
 
   MaterialColor _getColor(AlertType alertType) {
-    MaterialColor color = Colors.red;
-    if(AlertType.SUCCESS == alertType) {
-      color = Colors.green;
-    }
-
-    if(AlertType.WARNING == alertType) {
-      color = Colors.orange;
+    MaterialColor color;
+    switch (alertType) {
+      case AlertType.ERROR: {
+        color = Colors.red;
+      }
+      break;
+      case AlertType.SUCCESS :
+        {
+          color = Colors.green;
+        }
+        break;
+      case AlertType.WARNING :
+        {
+          color = Colors.orange;
+        }
+        break;
     }
     return color;
   }
 
   Icon _getIcon(AlertType alertType) {
-    Icon icon = const Icon(Icons.error_outline);
-    if(AlertType.SUCCESS == alertType) {
-      icon = const Icon(Icons.check_circle_outline);
-    }
-
-    if(AlertType.WARNING == alertType) {
-      icon = const Icon(Icons.warning_amber_outlined);
+    Icon icon;
+    switch (alertType) {
+      case AlertType.ERROR: {
+        icon = const Icon(Icons.error_outline);
+      }
+      break;
+      case AlertType.SUCCESS :
+        {
+          icon = const Icon(Icons.check_circle_outline);
+        }
+        break;
+      case AlertType.WARNING :
+        {
+          icon = const Icon(Icons.warning_amber_outlined);
+        }
+        break;
     }
     return icon;
   }

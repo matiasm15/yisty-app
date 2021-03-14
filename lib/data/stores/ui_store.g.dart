@@ -137,11 +137,11 @@ mixin _$UiStore on _UiStore, Store {
   }
 
   @override
-  void closeMessageAndAlertType() {
+  void removeMessageAlertType() {
     final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.closeMessageAndAlertType');
+        name: '_UiStore.removeMessageAlertType');
     try {
-      return super.closeMessageAndAlertType();
+      return super.removeMessageAlertType();
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }

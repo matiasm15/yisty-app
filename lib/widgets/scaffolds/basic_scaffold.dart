@@ -46,7 +46,7 @@ class _BasicScaffoldState extends State<BasicScaffold> {
 
     return AlertBox(
         message: uiStore.message,
-        onClose: () => uiStore.closeMessageAndAlertType(),
+        onClose: () => uiStore.removeMessageAlertType(),
         alertType: uiStore.alertType,
     );
   }
