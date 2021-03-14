@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 
 import 'package:yisty_app/data/persistence/user_persistence.dart';
 import 'package:yisty_app/models/user.dart';
+import 'package:yisty_app/models/alert_tpye.dart';
 
 part 'ui_store.g.dart';
 
@@ -13,13 +14,10 @@ abstract class _UiStore with Store {
   User _user;
 
   @observable
-  String errorMessage;
+  String message;
 
   @observable
-  String successMessage;
-
-  @observable
-  String warningMessage;
+  AlertType alertType;
 
   User get user {
     return _user;
@@ -49,32 +47,28 @@ abstract class _UiStore with Store {
   }
 
   @action
-  void setErrorMessage(String message) {
-    errorMessage = message;
+  void setMessage(String mgs) {
+    message = mgs;
   }
 
   @action
-  void removeErrorMessage() {
-    errorMessage = null;
+  void removeMessage() {
+    message = null;
   }
 
   @action
-  void setSuccessMessage(String message) {
-    successMessage = message;
+  void setAlertType(AlertType type) {
+    alertType = type;
   }
 
   @action
-  void removeSuccessMessage(){
-    successMessage = null;
+  void removeAlertType() {
+    alertType = null;
   }
 
   @action
-  void setWarningMessage(String message) {
-    warningMessage = message;
-  }
-
-  @action
-  void removeWarningMessage(){
-    warningMessage = null;
+  void closeMessageAndAlertType() {
+    removeMessage();
+    removeMessage();
   }
 }

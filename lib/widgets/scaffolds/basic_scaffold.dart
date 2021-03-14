@@ -26,53 +26,17 @@ class _BasicScaffoldState extends State<BasicScaffold> {
     return Observer(builder: (_) => showAlert(uiStore));
   }
 
-  Observer observerSuccess(UiStore uiStore) {
-    return Observer(builder: (_) => showSuccess(uiStore));
-  }
-
-  Observer observerWarning(UiStore uiStore) {
-    return Observer(builder: (_) => showWarning(uiStore));
-  }
-
   Widget showAlert(UiStore uiStore) {
-    if (uiStore.errorMessage == null) {
+    if (uiStore.message == null) {
       return const SizedBox(
         height: 0,
       );
     }
 
     return AlertBox(
-        message: uiStore.errorMessage,
-        onClose: () => uiStore.removeErrorMessage(),
-        alertType: AlertType.ERROR,
-    );
-  }
-
-  Widget showSuccess(UiStore uiStore) {
-    if(uiStore.successMessage == null) {
-      return const SizedBox(
-        height: 0,
-      );
-    }
-
-    return AlertBox(
-      message: uiStore.successMessage,
-      onClose: () => uiStore.removeSuccessMessage(),
-      alertType: AlertType.SUCCESS
-    );
-  }
-
-  Widget showWarning(UiStore uiStore) {
-    if(uiStore.warningMessage == null) {
-      return const SizedBox(
-        height: 0,
-      );
-    }
-
-    return AlertBox(
-        message: uiStore.warningMessage,
-        onClose: () => uiStore.removeWarningMessage(),
-        alertType: AlertType.WARNING
+        message: uiStore.message,
+        onClose: () => uiStore.closeMessageAndAlertType(),
+        alertType: uiStore.alertType,
     );
   }
 
@@ -88,8 +52,6 @@ class _BasicScaffoldState extends State<BasicScaffold> {
               child: Column(
                   children: <Widget>[
                     observerAlert(uiStore),
-                    observerSuccess(uiStore),
-                    observerWarning(uiStore),
                     Container(
                       height: MediaQuery.of(context).size.height - padding.top - padding.bottom - kToolbarHeight,
                       child: widget.body

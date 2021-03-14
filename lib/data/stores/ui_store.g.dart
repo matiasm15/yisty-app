@@ -24,48 +24,33 @@ mixin _$UiStore on _UiStore, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_UiStore.errorMessage');
+  final _$messageAtom = Atom(name: '_UiStore.message');
 
   @override
-  String get errorMessage {
-    _$errorMessageAtom.reportRead();
-    return super.errorMessage;
+  String get message {
+    _$messageAtom.reportRead();
+    return super.message;
   }
 
   @override
-  set errorMessage(String value) {
-    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
-      super.errorMessage = value;
+  set message(String value) {
+    _$messageAtom.reportWrite(value, super.message, () {
+      super.message = value;
     });
   }
 
-  final _$successMessageAtom = Atom(name: '_UiStore.successMessage');
+  final _$alertTypeAtom = Atom(name: '_UiStore.alertType');
 
   @override
-  String get successMessage {
-    _$successMessageAtom.reportRead();
-    return super.successMessage;
+  AlertType get alertType {
+    _$alertTypeAtom.reportRead();
+    return super.alertType;
   }
 
   @override
-  set successMessage(String value) {
-    _$successMessageAtom.reportWrite(value, super.successMessage, () {
-      super.successMessage = value;
-    });
-  }
-
-  final _$warningMessageAtom = Atom(name: '_UiStore.warningMessage');
-
-  @override
-  String get warningMessage {
-    _$warningMessageAtom.reportRead();
-    return super.warningMessage;
-  }
-
-  @override
-  set warningMessage(String value) {
-    _$warningMessageAtom.reportWrite(value, super.warningMessage, () {
-      super.warningMessage = value;
+  set alertType(AlertType value) {
+    _$alertTypeAtom.reportWrite(value, super.alertType, () {
+      super.alertType = value;
     });
   }
 
@@ -93,66 +78,55 @@ mixin _$UiStore on _UiStore, Store {
   final _$_UiStoreActionController = ActionController(name: '_UiStore');
 
   @override
-  void setErrorMessage(String message) {
-    final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.setErrorMessage');
+  void setMessage(String mgs) {
+    final _$actionInfo =
+        _$_UiStoreActionController.startAction(name: '_UiStore.setMessage');
     try {
-      return super.setErrorMessage(message);
+      return super.setMessage(mgs);
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void removeErrorMessage() {
-    final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.removeErrorMessage');
+  void removeMessage() {
+    final _$actionInfo =
+        _$_UiStoreActionController.startAction(name: '_UiStore.removeMessage');
     try {
-      return super.removeErrorMessage();
+      return super.removeMessage();
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setSuccessMessage(String message) {
-    final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.setSuccessMessage');
+  void setAlertType(AlertType type) {
+    final _$actionInfo =
+        _$_UiStoreActionController.startAction(name: '_UiStore.setAlertType');
     try {
-      return super.setSuccessMessage(message);
+      return super.setAlertType(type);
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void removeSuccessMessage() {
+  void removeAlertType() {
     final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.removeSuccessMessage');
+        name: '_UiStore.removeAlertType');
     try {
-      return super.removeSuccessMessage();
+      return super.removeAlertType();
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setWarningMessage(String message) {
+  void closeMessageAndAlertType() {
     final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.setWarningMessage');
+        name: '_UiStore.closeMessageAndAlertType');
     try {
-      return super.setWarningMessage(message);
-    } finally {
-      _$_UiStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removeWarningMessage() {
-    final _$actionInfo = _$_UiStoreActionController.startAction(
-        name: '_UiStore.removeWarningMessage');
-    try {
-      return super.removeWarningMessage();
+      return super.closeMessageAndAlertType();
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
@@ -161,9 +135,8 @@ mixin _$UiStore on _UiStore, Store {
   @override
   String toString() {
     return '''
-errorMessage: ${errorMessage},
-successMessage: ${successMessage},
-warningMessage: ${warningMessage}
+message: ${message},
+alertType: ${alertType}
     ''';
   }
 }
