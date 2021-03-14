@@ -28,7 +28,7 @@ class _HomeShowState extends State<HomeShow> {
   @override
   void didChangeDependencies() {
     String preference =InheritedProvider.of(context).uiStore.user.profile.name;
-    _future = InheritedProvider.of(context).services.newsApiService.getArticleResponseByEverything(preference);
+    _future = InheritedProvider.of(context).services.newApis.getArticleResponseByEverything(preference);
 
     super.didChangeDependencies();
   }

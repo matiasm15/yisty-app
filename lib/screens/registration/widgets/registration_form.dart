@@ -1,6 +1,9 @@
-
-import 'dart:async';
-
+import 'package:yisty_app/models/alert_tpye.dart';
+import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/services/profile_service.dart';
+import 'package:yisty_app/services/rest_client/api_exceptions.dart';
+import 'package:yisty_app/services/user_service.dart';
+import 'package:yisty_app/widgets/design/alert_page.dart';
 import 'package:yisty_app/widgets/design/loading_button.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
@@ -21,13 +24,9 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
 
-  String _email, _password, _userName, _passwordRepeat, _restriction;
-
-  // get data restriction back
-  List<S2Choice<int>> restriction = [
-    S2Choice<int>(value: 1, title: 'Vegetariano'),
-    S2Choice<int>(value: 2, title: 'Vegano')
-  ];
+  String _email, _password, _fullName, _passwordRepeat;
+  int _preferenceId;
+  Future<List<Profile>> _future;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -51,7 +50,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   void _userNameChanged(String value) {
     setState(() {
-      _userName = value;
+      _fullName = value;
     });
   }
 
@@ -106,7 +105,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   void _focusChanged(bool hasFocus) {
-    InheritedProvider.of(context).uiStore.removeErrorMessage();
+    InheritedProvider.of(context).uiStore.removeMessage();
 
     if (!hasFocus) {
       _formKey.currentState.validate();
@@ -120,130 +119,219 @@ class _RegistrationFormState extends State<RegistrationForm> {
    void _formSubmitted(RoundedLoadingButtonController controller) {
     FocusScope.of(context).unfocus();
 
-    final UiStore uiStore = InheritedProvider.of(context).uiStore;
-    uiStore.removeErrorMessage();
-    
+    final InheritedProvider provider = InheritedProvider.of(context);
+    final UiStore uiStore = provider.uiStore;
+    final UserService userService = provider.services.users;
+    uiStore.removeMessageAlertType();
+
     if (_formKey.currentState.validate()) {
-
-      Timer(const Duration(seconds: 3), () {
-
-        if(_restriction == null || _restriction.isEmpty) {
-          uiStore.setErrorMessage('Debe seleccionar una restricción');
+        if(_preferenceId == null) {
+          uiStore.setAlertType(AlertType.WARNING);
+          uiStore.setMessage('Debe selecionar una resctrición');
         } else {
-          // first send data to back
-          // Here message success then It goes /login
+          userService.create(email: _email, fullName: _fullName, password:
+            _password, preferenceId: _preferenceId)
+          .then(
+              (_) => {
+                uiStore.setAlertType(AlertType.SUCCESS),
+                uiStore.setMessage('Gracias por registrarte! Te enviamos '
+                    'un email a '+ _email + ' para activar tu cuenta y poder empezar a usar Yisty'),
+                Navigator.pushReplacementNamed(context, '/login')
+              }
+          ).catchError(
+              (Object _) =>  {
+                uiStore.setAlertType(AlertType.ERROR),
+                uiStore.setMessage('Ocurrió un error contactar al administrador')
+              },
+              test: (Object e) => e is BadRequestException
+          );
         }
         controller.reset();
-      });
-
     } else {
-
       controller.reset();
     }
   }
 
   @override
+  void didChangeDependencies() {
+    final InheritedProvider provider = InheritedProvider.of(context);
+    final ProfileService profileService = provider.services.profiles;
+
+    _future ??= profileService.getProfiles();
+
+    super.didChangeDependencies();
+  }
+
+  Widget _buildEmail() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Focus(
+        child: TextFormField(
+          enableSuggestions: true,
+          autocorrect: true,
+          obscureText: false,
+          onChanged: _emailChanged,
+          validator: _emailValidator,
+          decoration: const InputDecoration(hintText: 'Email', icon: Icon(Icons.alternate_email)),
+        ),
+        onFocusChange: _focusChanged,
+      ),
+    );
+  }
+
+  Widget _buildFullName() {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Focus(
+          child: TextFormField(
+            enableSuggestions: true,
+            autocorrect: true,
+            onChanged: _userNameChanged,
+            validator: _userNameValidator,
+            decoration: const InputDecoration(hintText: 'Nombre', icon: Icon(Icons.person)),
+          ),
+          onFocusChange: _focusChanged,
+        )
+    );
+  }
+
+  Widget _buildPassword() {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Focus(
+          child: TextFormField(
+            enableSuggestions: false,
+            autocorrect: false,
+            obscureText: true,
+            onChanged: _passwordChanged,
+            validator: _passwordValidator,
+            decoration: const InputDecoration(hintText: 'Contraseña', icon: Icon(Icons.lock_outline)),
+          ),
+          onFocusChange: _focusChanged,
+        )
+    );
+  }
+
+  Widget _buildPasswordRepeat() {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Focus(
+          child: TextFormField(
+            enableSuggestions: false,
+            autocorrect: false,
+            obscureText: true,
+            onChanged: _passwordRepeatChanged,
+            validator: _comparePassword,
+            decoration: const InputDecoration(hintText: 'Repetir contraseña', icon: Icon(Icons.lock_outline)),
+          ),
+          onFocusChange: _focusChanged,
+        )
+    );
+  }
+
+  Widget buildLoading() {
+    return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column (
+            mainAxisAlignment: MainAxisAlignment.center,
+            // ignore: prefer_const_literals_to_create_immutables
+            children: <Widget> [
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                strokeWidth: 6,
+                backgroundColor: Colors.white,
+              )
+            ],
+          ),
+        )
+    );
+  }
+
+  Widget _buildPreference(BuildContext context) {
+
+    return FutureBuilder<List<Profile>>(
+        future: _future,
+        builder: (_, AsyncSnapshot<List<Profile>> snapshot) {
+          if (snapshot.hasData) {
+            final List<Profile> preferences = snapshot.data;
+            return _preferenceList(preferences);
+          } else if (snapshot.hasError) {
+            if (snapshot.error is AppException) {
+              return AlertPage(message: snapshot.error.toString());
+            } else {
+              throw snapshot.error;
+            }
+          } else {
+            return buildLoading();
+          }
+        }
+    );
+  }
+
+  List<S2Choice<int>> _formmatPreference(List<Profile> preference) {
+    return preference.map((Profile value) =>
+        S2Choice<int>(value: value.id, title: value.name))
+        .toList();
+  }
+
+  Widget _preferenceList(List<Profile> preferences) {
+    return Container(
+      child: SmartSelect<int>.single(
+        value: _preferenceId,
+        choiceItems: _formmatPreference(preferences),
+        modalTitle: 'Restricción Alimenticia',
+        placeholder: 'Selecionar',
+        modalStyle: const S2ModalStyle(
+          backgroundColor: Colors.yellow,
+        ),
+        modalHeaderStyle: const S2ModalHeaderStyle(
+            backgroundColor: Colors.green,
+            centerTitle: true,
+            textStyle: TextStyle(
+              color: Colors.black,
+            )
+        ),
+        modalType: S2ModalType.bottomSheet,
+        modalConfig: const S2ModalConfig(
+            style: S2ModalStyle(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                )
+            )
+        ),
+        // ignore: always_specify_types
+        onChange: (state) => setState(()  => {
+          //_preference = state.title,
+          _preferenceId = state.value
+        } ),
+      ),
+    );
+  }
+  
+  Widget _buildLoadingButton() {
+    return Container(
+        width: double.infinity,
+        height: 40,
+        child: LoadingButton(
+          text: 'Registrar',
+          onPressed: _formSubmitted,
+        )
+    );
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Focus(
-                child: TextFormField(
-                  enableSuggestions: true,
-                  autocorrect: true,
-                  obscureText: false,
-                  onChanged: _emailChanged,
-                  validator: _emailValidator,
-                  decoration: const InputDecoration(hintText: 'Email', icon: Icon(Icons.alternate_email)),
-                ),
-                onFocusChange: _focusChanged,
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Focus(
-                  child: TextFormField(
-                    enableSuggestions: true,
-                    autocorrect: true,
-                    onChanged: _userNameChanged,
-                    validator: _userNameValidator,
-                    decoration: const InputDecoration(hintText: 'Nombre', icon: Icon(Icons.person)),
-                  ),
-                  onFocusChange: _focusChanged,
-                )
-            ),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Focus(
-                  child: TextFormField(
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    obscureText: true,
-                    onChanged: _passwordChanged,
-                    validator: _passwordValidator,
-                    decoration: const InputDecoration(hintText: 'Contraseña', icon: Icon(Icons.lock_outline)),
-                ),
-                  onFocusChange: _focusChanged,
-              )
-            ),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Focus(
-                  child: TextFormField(
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    obscureText: true,
-                    onChanged: _passwordRepeatChanged,
-                    validator: _comparePassword,
-                    decoration: const InputDecoration(hintText: 'Repetir contraseña', icon: Icon(Icons.lock_outline)),
-                  ),
-                  onFocusChange: _focusChanged,
-                )
-            ),
-            Container(
-              // ignore: always_specify_types
-              child: SmartSelect.single(
-                  value: _restriction,
-                  choiceItems: restriction,
-                  modalTitle: 'Restricción Alimenticia',
-                  placeholder: 'Selecionar',
-                  modalStyle: const S2ModalStyle(
-                    backgroundColor: Colors.yellow,
-                  ),
-                  modalHeaderStyle: const S2ModalHeaderStyle(
-                    backgroundColor: Colors.green,
-                    centerTitle: true,
-                    textStyle: TextStyle(
-                      color: Colors.black,
-                    )
-                  ),
-                  modalType: S2ModalType.bottomSheet,
-                  modalConfig: const S2ModalConfig(
-                    style: S2ModalStyle(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      )
-                    )
-                  ),
-                  // ignore: always_specify_types
-                  onChange: (state) => setState(()  => _restriction = state.title),
-              ),
-            ),
-          ],
-        ),
-        Container(
-          width: double.infinity,
-          height: 40,
-          child: LoadingButton(
-            text: 'Registrar',
-            onPressed: _formSubmitted,
-          )
-        ),
+        _buildEmail(),
+        _buildFullName(),
+        _buildPassword(),
+        _buildPasswordRepeat(),
+        _buildPreference(context),
+        _buildLoadingButton(),
         Container(
           width: double.infinity,
           height: 60,

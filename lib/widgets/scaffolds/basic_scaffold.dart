@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/models/alert_tpye.dart';
 import 'package:yisty_app/widgets/design/alert_box.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 
@@ -37,15 +38,16 @@ class _BasicScaffoldState extends State<BasicScaffold> {
   }
 
   Widget showAlert(UiStore uiStore) {
-    if (uiStore.errorMessage == null) {
+    if (uiStore.message == null) {
       return const SizedBox(
         height: 0,
       );
     }
 
     return AlertBox(
-        message: uiStore.errorMessage,
-        onClose: () => uiStore.removeErrorMessage()
+        message: uiStore.message,
+        onClose: () => uiStore.removeMessageAlertType(),
+        alertType: uiStore.alertType,
     );
   }
 

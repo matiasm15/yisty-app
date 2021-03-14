@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yisty_app/models/alert_tpye.dart';
 import 'package:yisty_app/widgets/design/alert_box.dart';
 
 class AlertPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _AlertPageState extends State<AlertPage> {
       return AlertBox(
         message: widget.message,
         onClose: () => _hide(),
+        alertType: AlertType.ERROR,
       );
     } else {
       return Container();

@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
+import 'package:yisty_app/models/alert_tpye.dart';
 import 'package:yisty_app/models/user.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
@@ -37,7 +38,8 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _focusChanged(bool hasFocus) {
-    InheritedProvider.of(context).uiStore.removeErrorMessage();
+    InheritedProvider.of(context).uiStore.removeMessage();
+    InheritedProvider.of(context).uiStore.removeAlertType();
 
     if (!hasFocus) {
       _formKey.currentState.validate();
@@ -49,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
 
     final InheritedProvider provider = InheritedProvider.of(context);
     final UiStore uiStore = provider.uiStore;
-    uiStore.removeErrorMessage();
+    uiStore.removeMessageAlertType();
 
     // Validate returns true if the form is valid, otherwise false.
     if (_formKey.currentState.validate()) {
@@ -60,7 +62,10 @@ class _LoginFormState extends State<LoginForm> {
       ).then(
               (_) => Navigator.pushReplacementNamed(context, '/home')
       ).catchError(
-        (Object _) => provider.uiStore.setErrorMessage('El email o la contraseña son inválidas.'),
+        (Object _) => {
+          uiStore.setAlertType(AlertType.ERROR),
+          uiStore.setMessage('El email o la contraseña son inválidas.'),
+        },
         test: (Object e) => e is UnauthorisedException
       ).whenComplete(
               () => controller.reset()

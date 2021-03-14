@@ -24,4 +24,20 @@ class UserService extends BaseService {
 
     return User.fromJson(json['user'] as Map<String, dynamic>, accessToken);
   }
+
+  // el valor de profileId tiene que definirlo bien actualmente asi lo dejamos seteado
+  Future<User> create({String email, String fullName, String password, int preferenceId}) async {
+    final ApiResponse apiResponse = await client.post(
+      'users',
+      body: <String, Object> {
+        'email': email,
+        'full_name': fullName,
+        'password': password,
+        'profileId': '1',
+        'foodPreferenceId' : preferenceId.toString()
+      }
+    );
+    final Map<String, dynamic> json = apiResponse.json() as Map<String, dynamic>;
+    return User.fromJson(json, null);
+  }
 }
