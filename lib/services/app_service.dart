@@ -3,7 +3,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/user.dart';
 import 'package:yisty_app/services/new_api_service.dart';
-import 'package:yisty_app/services/preference_service.dart';
+import 'package:yisty_app/services/profile_service.dart';
 import 'package:yisty_app/services/product_service.dart';
 import 'package:yisty_app/services/rest_client/rest_client.dart';
 import 'package:yisty_app/services/user_scan_service.dart';
@@ -19,7 +19,7 @@ class AppService {
     products = ProductService(client: client, uiStore: uiStore);
     users = UserService(client: client, uiStore: uiStore);
     userScans = UserScanService(client: client, uiStore: uiStore);
-    preferenceService = PreferenceService(client: client, uiStore: uiStore);
+    profileService = ProfileService(client: client, uiStore: uiStore);
     newsApiService = NewsApiService(apiKey: newApiKey);
   }
 
@@ -32,7 +32,7 @@ class AppService {
   UserService users;
   UserScanService userScans;
   NewsApiService newsApiService;
-  PreferenceService preferenceService;
+  ProfileService profileService;
 
   void loginUser(User user)  {
     client.accessToken = user?.accessToken;

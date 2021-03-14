@@ -1,5 +1,6 @@
 import 'package:yisty_app/models/alert_tpye.dart';
-import 'package:yisty_app/services/preference_service.dart';
+import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/services/profile_service.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/services/user_service.dart';
 import 'package:yisty_app/widgets/design/alert_page.dart';
@@ -10,7 +11,6 @@ import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:yisty_app/models/preference.dart';
 import 'package:email_validator/email_validator.dart';
 
 
@@ -26,7 +26,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   String _email, _password, _fullName, _passwordRepeat;
   int _preferenceId;
-  Future<List<Preference>> _future;
+  Future<List<Profile>> _future;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -156,9 +156,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   void didChangeDependencies() {
     final InheritedProvider provider = InheritedProvider.of(context);
-    final PreferenceService preferenceService = provider.services.preferenceService;
+    final ProfileService profileService = provider.services.profileService;
 
-    _future ??= preferenceService.getPreferences();
+    _future ??= profileService.getProfiles();
 
     super.didChangeDependencies();
   }
@@ -251,11 +251,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget _buildPreference(BuildContext context) {
 
-    return FutureBuilder<List<Preference>>(
+    return FutureBuilder<List<Profile>>(
         future: _future,
-        builder: (_, AsyncSnapshot<List<Preference>> snapshot) {
+        builder: (_, AsyncSnapshot<List<Profile>> snapshot) {
           if (snapshot.hasData) {
-            final List<Preference> preferences = snapshot.data;
+            final List<Profile> preferences = snapshot.data;
             return _preferenceList(preferences);
           } else if (snapshot.hasError) {
             if (snapshot.error is AppException) {
@@ -270,13 +270,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  List<S2Choice<int>> _formmatPreference(List<Preference> preference) {
-    return preference.map((Preference value) =>
+  List<S2Choice<int>> _formmatPreference(List<Profile> preference) {
+    return preference.map((Profile value) =>
         S2Choice<int>(value: value.id, title: value.name))
         .toList();
   }
 
-  Widget _preferenceList(List<Preference> preferences) {
+  Widget _preferenceList(List<Profile> preferences) {
     return Container(
       child: SmartSelect<int>.single(
         value: _preferenceId,

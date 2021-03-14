@@ -9,6 +9,21 @@ part of 'ui_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UiStore on _UiStore, Store {
+  final _$screenPaddingAtom = Atom(name: '_UiStore.screenPadding');
+
+  @override
+  EdgeInsets get screenPadding {
+    _$screenPaddingAtom.reportRead();
+    return super.screenPadding;
+  }
+
+  @override
+  set screenPadding(EdgeInsets value) {
+    _$screenPaddingAtom.reportWrite(value, super.screenPadding, () {
+      super.screenPadding = value;
+    });
+  }
+
   final _$_userAtom = Atom(name: '_UiStore._user');
 
   @override
@@ -78,11 +93,11 @@ mixin _$UiStore on _UiStore, Store {
   final _$_UiStoreActionController = ActionController(name: '_UiStore');
 
   @override
-  void setMessage(String mgs) {
-    final _$actionInfo =
-        _$_UiStoreActionController.startAction(name: '_UiStore.setMessage');
+  void setScreenPadding(EdgeInsets padding) {
+    final _$actionInfo = _$_UiStoreActionController.startAction(
+        name: '_UiStore.setScreenPadding');
     try {
-      return super.setMessage(mgs);
+      return super.setScreenPadding(padding);
     } finally {
       _$_UiStoreActionController.endAction(_$actionInfo);
     }
@@ -135,6 +150,7 @@ mixin _$UiStore on _UiStore, Store {
   @override
   String toString() {
     return '''
+screenPadding: ${screenPadding},
 message: ${message},
 alertType: ${alertType}
     ''';

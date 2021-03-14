@@ -22,6 +22,17 @@ class BasicScaffold extends StatefulWidget {
 }
 
 class _BasicScaffoldState extends State<BasicScaffold> {
+  @override
+  void didChangeDependencies() {
+    // Deberia poder obtener este dato directamente en donde quiero usarlo pero
+    // desde dentro de un SafeArea me devuelve zero.
+    final EdgeInsets screenPadding = MediaQuery.of(context).padding;
+
+    InheritedProvider.of(context).uiStore.setScreenPadding(screenPadding);
+
+    super.didChangeDependencies();
+  }
+
   Observer observerAlert(UiStore uiStore) {
     return Observer(builder: (_) => showAlert(uiStore));
   }
@@ -40,26 +51,27 @@ class _BasicScaffoldState extends State<BasicScaffold> {
     );
   }
 
+  Widget buildBody() {
+    final UiStore uiStore = InheritedProvider.of(context).uiStore;
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+            children: <Widget>[
+              observerAlert(uiStore),
+              widget.body
+            ]
+        )
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final UiStore uiStore = InheritedProvider.of(context).uiStore;
-    final EdgeInsets padding = MediaQuery.of(context).padding;
-
     return Scaffold(
       appBar: widget.appBar,
       backgroundColor: widget.backgroundColor,
-      body: SafeArea(child: SingleChildScrollView(
-              child: Column(
-                  children: <Widget>[
-                    observerAlert(uiStore),
-                    Container(
-                      height: MediaQuery.of(context).size.height - padding.top - padding.bottom - kToolbarHeight,
-                      child: widget.body
-                    )
-                  ]
-              )
-          )
-      ),
+      body: buildBody(),
       drawer: widget.drawer,
       floatingActionButton: widget.floatingActionButton,
     );

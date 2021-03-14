@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:yisty_app/data/persistence/user_persistence.dart';
@@ -10,6 +11,9 @@ part 'ui_store.g.dart';
 class UiStore = _UiStore with _$UiStore;
 
 abstract class _UiStore with Store {
+  @observable
+  EdgeInsets screenPadding;
+
   @observable
   User _user;
 
@@ -47,6 +51,10 @@ abstract class _UiStore with Store {
   }
 
   @action
+  void setScreenPadding(EdgeInsets padding) {
+    screenPadding = padding;
+  }
+
   void setMessage(String mgs) {
     message = mgs;
   }

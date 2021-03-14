@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:yisty_app/models/product.dart';
+import 'package:yisty_app/models/user.dart';
+import 'package:yisty_app/widgets/scaffolds/init_page.dart';
 import 'package:yisty_app/screens/search/product_search.dart';
 import 'package:yisty_app/widgets/scaffolds/basic_scaffold.dart';
 
 @immutable
 class AppScaffold extends StatelessWidget {
-  const AppScaffold({Key key, this.body, this.floatingActionButton, this.title, this.drawer, this.search = false}) : super(key: key);
+  const AppScaffold({Key key, this.builder, this.floatingActionButton, this.title, this.drawer, this.search = false}) : super(key: key);
 
-  final Widget body;
+  final Widget Function(User) builder;
   final Widget drawer;
   final Widget floatingActionButton;
   final Widget title;
@@ -29,16 +32,20 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasicScaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            buildSearch(context)
-          ],
-          title: title
-        ),
-        body: body,
-        floatingActionButton: floatingActionButton,
-        drawer: drawer
+    return InitPage(
+      builder: (User user) {
+        return BasicScaffold(
+            appBar: AppBar(
+              actions: <Widget>[
+                buildSearch(context)
+              ],
+              title: title
+            ),
+            body: builder(user),
+            floatingActionButton: floatingActionButton,
+            drawer: drawer
+        );
+      },
     );
   }
 }
