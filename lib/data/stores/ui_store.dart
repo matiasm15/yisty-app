@@ -77,6 +77,6 @@ abstract class _UiStore with Store {
   @action
   void removeMessageAlertType() {
     removeMessage();
-    removeMessage();
+    removeAlertType();
   }
 }

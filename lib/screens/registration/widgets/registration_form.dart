@@ -155,7 +155,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   void didChangeDependencies() {
     final InheritedProvider provider = InheritedProvider.of(context);
-    final ProfileService profileService = provider.services.profileService;
+    final ProfileService profileService = provider.services.profiles;
 
     _future ??= profileService.getProfiles();
 

@@ -19,8 +19,8 @@ class AppService {
     products = ProductService(client: client, uiStore: uiStore);
     users = UserService(client: client, uiStore: uiStore);
     userScans = UserScanService(client: client, uiStore: uiStore);
-    profileService = ProfileService(client: client, uiStore: uiStore);
-    newsApiService = NewsApiService(apiKey: newApiKey);
+    profiles = ProfileService(client: client, uiStore: uiStore);
+    newApis = NewsApiService(apiKey: newApiKey);
   }
 
   String apiUrl;
@@ -31,8 +31,8 @@ class AppService {
   ProductService products;
   UserService users;
   UserScanService userScans;
-  NewsApiService newsApiService;
-  ProfileService profileService;
+  NewsApiService newApis;
+  ProfileService profiles;
 
   void loginUser(User user)  {
     client.accessToken = user?.accessToken;
