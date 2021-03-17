@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 
 import 'package:yisty_app/data/persistence/user_persistence.dart';
 import 'package:yisty_app/models/user.dart';
-import 'package:yisty_app/models/alert_tpye.dart';
+import 'package:yisty_app/models/alert_type.dart';
 
 part 'ui_store.g.dart';
 

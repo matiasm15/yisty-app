@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yisty_app/models/alert_tpye.dart';
+import 'package:yisty_app/models/alert_type.dart';
 import 'package:yisty_app/widgets/design/alert_box.dart';
 
 class AlertPage extends StatefulWidget {

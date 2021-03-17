@@ -28,7 +28,7 @@ class ProductPage extends StatelessWidget {
             ),
             ProductMatching(
               product: product,
-              profile: user.profile
+              foodPreference: user.foodPreference
             )
           ],
         )

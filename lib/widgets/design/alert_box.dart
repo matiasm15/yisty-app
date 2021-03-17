@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:yisty_app/models/alert_tpye.dart';
+import 'package:yisty_app/models/alert_type.dart';
 
 class AlertBox extends StatelessWidget {
   const AlertBox({Key key, this.message, this.onClose,

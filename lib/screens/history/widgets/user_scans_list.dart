@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/models/food_preference.dart';
 import 'package:yisty_app/models/user_scan.dart';
 import 'package:yisty_app/widgets/products/product_preview.dart';
 
 class UserScansList extends StatelessWidget {
-  const UserScansList({Key key, this.userScans, this.profile}) : super(key: key);
+  const UserScansList({Key key, this.userScans, this.foodPreference}) : super(key: key);
 
-  final Profile profile;
+  final FoodPreference foodPreference;
   final List<UserScan> userScans;
 
   @override
@@ -19,7 +19,7 @@ class UserScansList extends StatelessWidget {
           final UserScan userScan = userScans[i];
 
           return ProductPreview(
-            profile: profile,
+            foodPreference: foodPreference,
             date: userScan.date,
             product: userScan.product
           );

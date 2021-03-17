@@ -1,4 +1,4 @@
-import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/models/food_preference.dart';
 
 class User {
   User({this.id, this.fullName, this.email, this.accessToken, this.active});
@@ -18,5 +18,5 @@ class User {
   String email;
   String accessToken;
   bool active;
-  Profile profile = Profile(id: 1, name: 'Vegano');
+  FoodPreference foodPreference = FoodPreference(id: 1, name: 'Vegano');
 }

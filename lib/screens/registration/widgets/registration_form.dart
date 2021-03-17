@@ -1,6 +1,6 @@
-import 'package:yisty_app/models/alert_tpye.dart';
-import 'package:yisty_app/models/profile.dart';
-import 'package:yisty_app/services/profile_service.dart';
+import 'package:yisty_app/models/alert_type.dart';
+import 'package:yisty_app/models/food_preference.dart';
+import 'package:yisty_app/services/food_preference_service.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/services/user_service.dart';
 import 'package:yisty_app/widgets/design/alert_page.dart';
@@ -26,7 +26,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   String _email, _password, _fullName, _passwordRepeat;
   int _preferenceId;
-  Future<List<Profile>> _future;
+  Future<List<FoodPreference>> _future;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -63,7 +63,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     if(value.length < 8) {
       return 'La contraseña debe tener mínimo 8 caracteres';
     }
-    
+
     return  null;
   }
 
@@ -155,9 +155,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   void didChangeDependencies() {
     final InheritedProvider provider = InheritedProvider.of(context);
-    final ProfileService profileService = provider.services.profiles;
+    final FoodPreferenceService foodPreferenceService = provider.services.food_preferences;
 
-    _future ??= profileService.getProfiles();
+    _future ??= foodPreferenceService.getFoodPreferences();
 
     super.didChangeDependencies();
   }
@@ -250,11 +250,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget _buildPreference(BuildContext context) {
 
-    return FutureBuilder<List<Profile>>(
+    return FutureBuilder<List<FoodPreference>>(
         future: _future,
-        builder: (_, AsyncSnapshot<List<Profile>> snapshot) {
+        builder: (_, AsyncSnapshot<List<FoodPreference>> snapshot) {
           if (snapshot.hasData) {
-            final List<Profile> preferences = snapshot.data;
+            final List<FoodPreference> preferences = snapshot.data;
             return _preferenceList(preferences);
           } else if (snapshot.hasError) {
             if (snapshot.error is AppException) {
@@ -269,13 +269,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  List<S2Choice<int>> _formmatPreference(List<Profile> preference) {
-    return preference.map((Profile value) =>
+  List<S2Choice<int>> _formmatPreference(List<FoodPreference> preference) {
+    return preference.map((FoodPreference value) =>
         S2Choice<int>(value: value.id, title: value.name))
         .toList();
   }
 
-  Widget _preferenceList(List<Profile> preferences) {
+  Widget _preferenceList(List<FoodPreference> preferences) {
     return Container(
       child: SmartSelect<int>.single(
         value: _preferenceId,
@@ -309,7 +309,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       ),
     );
   }
-  
+
   Widget _buildLoadingButton() {
     return Container(
         width: double.infinity,
@@ -320,7 +320,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         )
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Form(

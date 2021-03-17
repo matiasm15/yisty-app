@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/models/food_preference.dart';
 import 'package:yisty_app/models/user_scan.dart';
 import 'package:yisty_app/screens/history/widgets/user_scans_list.dart';
 import 'package:yisty_app/util/date_time_utils.dart';
@@ -13,19 +13,19 @@ class HistoryList extends StatelessWidget {
 
   final List<UserScan> userScans;
 
-  Widget buildListByDate({List<UserScan> scansByDate, String date, Profile profile}) {
+  Widget buildListByDate({List<UserScan> scansByDate, String date, FoodPreference foodPreference}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Subtitle(text: date, type: SubtitleType.h2),
-        UserScansList(userScans: scansByDate, profile: profile)
+        UserScansList(userScans: scansByDate, foodPreference: foodPreference)
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final Profile profile = InheritedProvider.of(context).uiStore.user.profile;
+    final FoodPreference foodPreference = InheritedProvider.of(context).uiStore.user.foodPreference;
 
     final Map<String, List<UserScan>> scansBy = userScans.groupBy<String>((UserScan scan) {
       final DateTime time = DateTime(scan.date.year, scan.date.month, scan.date.day);
@@ -43,7 +43,7 @@ class HistoryList extends StatelessWidget {
           return buildListByDate(
               scansByDate: scansByDate,
               date: date,
-              profile: profile
+              foodPreference: foodPreference
           );
         }
     );

@@ -1,10 +1,10 @@
 import 'package:yisty_app/models/product.dart';
 
-class Profile {
-  Profile({this.id, this.name});
+class FoodPreference {
+  FoodPreference({this.id, this.name});
 
-  factory Profile.fromJson(Map<String, dynamic> responseData) {
-    return Profile(
+  factory FoodPreference.fromJson(Map<String, dynamic> responseData) {
+    return FoodPreference(
       id: responseData['id'] as int,
       name: responseData['name'] as String,
     );

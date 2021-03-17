@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:yisty_app/models/product.dart';
-import 'package:yisty_app/models/profile.dart';
+import 'package:yisty_app/models/food_preference.dart';
 import 'package:yisty_app/screens/products/product_page.dart';
 
 class ProductPreview extends StatelessWidget {
-  const ProductPreview({Key key, @required this.product, @required this.profile, this.date}) : super(key: key);
+  const ProductPreview({Key key, @required this.product, @required this.foodPreference, this.date}) : super(key: key);
 
-  final Profile profile;
+  final FoodPreference foodPreference;
   final Product product;
   final DateTime date;
 
   Widget buildMatching() {
-    if (profile.isPermitted(product)) {
+    if (foodPreference.isPermitted(product)) {
       return buildMatchingText('APTO', Colors.green);
-    } else if (Profile().isDenied(product)) {
+    } else if (FoodPreference().isDenied(product)) {
       return buildMatchingText('NO APTO', Colors.red);
     } else {
       return buildMatchingText('DESCONOCIDO', Colors.grey);

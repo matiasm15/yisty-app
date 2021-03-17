@@ -21,10 +21,6 @@ class HomePage extends StatelessWidget {
       drawer: MenuDrawer(),
       title: Row(
         children: <Widget>[
-          Padding(
-              child: Image.asset('assets/logo.png', width: 30, height: 30),
-              padding: const EdgeInsets.only(right: 10)
-          ),
           const Text('Yisty'),
         ],
       )
