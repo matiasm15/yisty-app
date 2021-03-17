@@ -38,8 +38,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _focusChanged(bool hasFocus) {
-    InheritedProvider.of(context).uiStore.removeMessage();
-    InheritedProvider.of(context).uiStore.removeAlertType();
+    InheritedProvider.of(context).uiStore.removeAlert();
 
     if (!hasFocus) {
       _formKey.currentState.validate();
@@ -51,21 +50,30 @@ class _LoginFormState extends State<LoginForm> {
 
     final InheritedProvider provider = InheritedProvider.of(context);
     final UiStore uiStore = provider.uiStore;
-    uiStore.removeMessageAlertType();
+    uiStore.removeAlert();
 
     // Validate returns true if the form is valid, otherwise false.
     if (_formKey.currentState.validate()) {
       provider.services.users.authenticate(
           email, password
       ).then(
-              (User user) => provider.loginUser(user)
-      ).then(
-              (_) => Navigator.pushReplacementNamed(context, '/home')
+        (User user) async {
+          if (user.active) {
+            await provider.loginUser(user);
+
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            uiStore.setAlert(
+              message: 'Tu usuario aun no fue activado. Podés hacerlo desde el email que te mandamos a tu casilla.',
+              type: AlertType.ERROR
+            );
+          }
+        }
       ).catchError(
-        (Object _) => {
-          uiStore.setAlertType(AlertType.ERROR),
-          uiStore.setMessage('El email o la contraseña son inválidas.'),
-        },
+        (Object _) => uiStore.setAlert(
+          message: 'El email o la contraseña son inválidas.',
+          type: AlertType.ERROR
+        ),
         test: (Object e) => e is UnauthorisedException
       ).whenComplete(
               () => controller.reset()

@@ -105,7 +105,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   void _focusChanged(bool hasFocus) {
-    InheritedProvider.of(context).uiStore.removeMessage();
+    InheritedProvider.of(context).uiStore.removeAlert();
 
     if (!hasFocus) {
       _formKey.currentState.validate();
@@ -122,27 +122,31 @@ class _RegistrationFormState extends State<RegistrationForm> {
     final InheritedProvider provider = InheritedProvider.of(context);
     final UiStore uiStore = provider.uiStore;
     final UserService userService = provider.services.users;
-    uiStore.removeMessageAlertType();
+    uiStore.removeAlert();
 
     if (_formKey.currentState.validate()) {
         if(_preferenceId == null) {
-          uiStore.setAlertType(AlertType.WARNING);
-          uiStore.setMessage('Debe selecionar una resctrición');
+          uiStore.setAlert(
+              message: 'Debe selecionar una resctrición',
+              type: AlertType.WARNING
+          );
         } else {
           userService.create(email: _email, fullName: _fullName, password:
             _password, preferenceId: _preferenceId)
           .then(
-              (_) => {
-                uiStore.setAlertType(AlertType.SUCCESS),
-                uiStore.setMessage('Gracias por registrarte! Te enviamos '
-                    'un email a '+ _email + ' para activar tu cuenta y poder empezar a usar Yisty'),
-                Navigator.pushReplacementNamed(context, '/login')
+              (_) {
+                uiStore.setAlert(
+                  message: 'Gracias por registrarte! Te enviamos '
+                      'un email a '+ _email + ' para activar tu cuenta y poder empezar a usar Yisty',
+                  type: AlertType.SUCCESS
+                );
+                Navigator.pushReplacementNamed(context, '/login');
               }
           ).catchError(
-              (Object _) =>  {
-                uiStore.setAlertType(AlertType.ERROR),
-                uiStore.setMessage('Ocurrió un error contactar al administrador')
-              },
+              (Object _) => uiStore.setAlert(
+                message: 'Ocurrió un error contactar al administrador',
+                type: AlertType.ERROR
+              ),
               test: (Object e) => e is BadRequestException
           );
         }
@@ -155,7 +159,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   void didChangeDependencies() {
     final InheritedProvider provider = InheritedProvider.of(context);
-    final FoodPreferenceService foodPreferenceService = provider.services.food_preferences;
+    final FoodPreferenceService foodPreferenceService = provider.services.foodPreferences;
 
     _future ??= foodPreferenceService.getFoodPreferences();
 

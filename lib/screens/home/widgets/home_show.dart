@@ -27,7 +27,7 @@ class _HomeShowState extends State<HomeShow> {
 
   @override
   void didChangeDependencies() {
-    String preference = InheritedProvider.of(context).uiStore.user.foodPreference.name;
+    final String preference = InheritedProvider.of(context).uiStore.user.foodPreference.name;
     _future = InheritedProvider.of(context).services.newApis.getArticleResponseByEverything(preference);
 
     super.didChangeDependencies();
