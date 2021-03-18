@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
-import 'package:yisty_app/models/alert_type.dart';
 import 'package:yisty_app/widgets/design/alert_box.dart';
 import 'package:yisty_app/widgets/inherited_provider.dart';
 
@@ -46,7 +45,7 @@ class _BasicScaffoldState extends State<BasicScaffold> {
 
     return AlertBox(
         message: uiStore.message,
-        onClose: () => uiStore.removeMessageAlertType(),
+        onClose: () => uiStore.removeAlert(),
         alertType: uiStore.alertType,
     );
   }

@@ -18,13 +18,21 @@ abstract class _UiStore with Store {
   User _user;
 
   @observable
-  String message;
+  String _message;
 
   @observable
-  AlertType alertType;
+  AlertType _alertType;
 
   User get user {
     return _user;
+  }
+
+  String get message {
+    return _message;
+  }
+
+  AlertType get alertType {
+    return _alertType;
   }
 
   @action
@@ -55,28 +63,16 @@ abstract class _UiStore with Store {
     screenPadding = padding;
   }
 
-  void setMessage(String mgs) {
-    message = mgs;
+
+  @action
+  void setAlert({String message, AlertType type}) {
+    _message = message;
+    _alertType = type;
   }
 
   @action
-  void removeMessage() {
-    message = null;
-  }
-
-  @action
-  void setAlertType(AlertType type) {
-    alertType = type;
-  }
-
-  @action
-  void removeAlertType() {
-    alertType = null;
-  }
-
-  @action
-  void removeMessageAlertType() {
-    removeMessage();
-    removeAlertType();
+  void removeAlert() {
+    _message = null;
+    _alertType = null;
   }
 }

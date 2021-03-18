@@ -20,8 +20,8 @@ class HomePage extends StatelessWidget {
       search: true,
       drawer: MenuDrawer(),
       title: Row(
-        children: <Widget>[
-          const Text('Yisty'),
+        children: const <Widget>[
+          Text('Yisty'),
         ],
       )
     );

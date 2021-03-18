@@ -19,7 +19,7 @@ class AppService {
     products = ProductService(client: client, uiStore: uiStore);
     users = UserService(client: client, uiStore: uiStore);
     userScans = UserScanService(client: client, uiStore: uiStore);
-    food_preferences = FoodPreferenceService(client: client, uiStore: uiStore);
+    foodPreferences = FoodPreferenceService(client: client, uiStore: uiStore);
     newApis = NewsApiService(apiKey: newApiKey);
   }
 
@@ -32,7 +32,7 @@ class AppService {
   UserService users;
   UserScanService userScans;
   NewsApiService newApis;
-  FoodPreferenceService food_preferences;
+  FoodPreferenceService foodPreferences;
 
   void loginUser(User user)  {
     client.accessToken = user?.accessToken;
