@@ -28,13 +28,14 @@ dependencies:
   email_validator: ^1.0.5
   flutter:
     sdk: flutter
+  flutter_barcode_scanner: ^2.0.0-nullsafety.0
   flutter_config: ^1.0.8
   flutter_mobx: ^1.1.0+2
   flutter_svg: ^0.20.0-nullsafety.3
-  http: ^0.12.2
-  image_picker: ^0.6.7+7
+  http: ^0.13.1
+  image_picker: ^0.7.3
   mobx: ^1.2.1+4
-  newsapi: ^1.0.9
+  newsapi: ^2.0.0
   package_info: ^0.4.3
   rounded_loading_button: ^1.0.0
   share: ^0.6.5+4

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yisty_app/models/product.dart';
 import 'package:yisty_app/models/food_preference.dart';
 import 'package:yisty_app/screens/products/product_page.dart';
+import 'package:yisty_app/widgets/products/product_matching.dart';
 
 class ProductPreview extends StatelessWidget {
   const ProductPreview({Key key, @required this.product, @required this.foodPreference, this.date}) : super(key: key);
@@ -10,23 +11,6 @@ class ProductPreview extends StatelessWidget {
   final FoodPreference foodPreference;
   final Product product;
   final DateTime date;
-
-  Widget buildMatching() {
-    if (foodPreference.isPermitted(product)) {
-      return buildMatchingText('APTO', Colors.green);
-    } else if (FoodPreference().isDenied(product)) {
-      return buildMatchingText('NO APTO', Colors.red);
-    } else {
-      return buildMatchingText('DESCONOCIDO', Colors.grey);
-    }
-  }
-
-  Widget buildMatchingText(String message, Color color) {
-    return Text(
-      message,
-      style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold),
-    );
-  }
 
   Widget buildShops() {
     final int shopsQuantity = product.shopsQuantity();
@@ -68,7 +52,7 @@ class ProductPreview extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            buildMatching(),
+            ProductMatching(product: product, icon: false, size: 22),
             buildShops()
           ],
         )

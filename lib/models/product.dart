@@ -34,4 +34,19 @@ class Product {
   int shopsQuantity() {
     return affiliateShops.length;
   }
+
+  // TODO
+  bool get isPermitted {
+    return id % 3 == 1;
+  }
+
+  // TODO
+  bool get isDenied {
+    return id % 3 == 2;
+  }
+
+  // TODO
+  bool get isUnknown {
+    return id % 3 == 0;
+  }
 }

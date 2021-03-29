@@ -14,8 +14,9 @@ class HomePage extends StatelessWidget {
       builder: (_) => const HomeShow(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/scanner'),
-        tooltip: 'Increment',
+        tooltip: 'Escanear producto',
         child: const Icon(Icons.camera_alt),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       search: true,
       drawer: MenuDrawer(),

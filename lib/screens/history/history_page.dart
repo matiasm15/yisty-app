@@ -10,11 +10,6 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       builder: (_) => const HistoryContent(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/scanner'),
-        tooltip: 'Increment',
-        child: const Icon(Icons.camera_alt)
-      ),
       title: const Text('Historial')
     );
   }

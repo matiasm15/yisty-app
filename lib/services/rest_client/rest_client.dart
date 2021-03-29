@@ -26,13 +26,12 @@ class RestClient {
   Future<ApiResponse> get(String url) async {
     try {
       final http.Response response = await http.get(
-        _apiUrl + url,
+        Uri.parse(_apiUrl + url),
         headers: authHeaders,
       );
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
-      print('No net');
       throw FetchDataException('No Internet connection');
     }
   }
@@ -40,14 +39,13 @@ class RestClient {
   Future<ApiResponse> post(String url, {dynamic body, Map<String, String> headers}) async {
     try {
       final http.Response response = await http.post(
-        _apiUrl + url,
+        Uri.parse(_apiUrl + url),
         body: body,
         headers: headers ?? authHeaders,
       );
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
-      print('No net');
       throw FetchDataException('No Internet connection');
     }
   }
@@ -55,14 +53,13 @@ class RestClient {
   Future<ApiResponse> put(String url, dynamic body) async {
     try {
       final http.Response response = await http.put(
-        _apiUrl + url,
+        Uri.parse(_apiUrl + url),
         body: body,
         headers: authHeaders,
       );
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
-      print('No net');
       throw FetchDataException('No Internet connection');
     }
   }

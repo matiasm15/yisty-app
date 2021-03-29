@@ -1,5 +1,3 @@
-import 'package:yisty_app/models/product.dart';
-
 class FoodPreference {
   FoodPreference({this.id, this.name});
 
@@ -12,14 +10,4 @@ class FoodPreference {
 
   int id;
   String name;
-
-  // TODO
-  bool isPermitted(Product product) {
-    return product.id % 3 == 1;
-  }
-
-  // TODO
-  bool isDenied(Product product) {
-    return product.id % 3 == 2;
-  }
 }
