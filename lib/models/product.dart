@@ -1,7 +1,7 @@
 import 'package:yisty_app/models/affiliate_shop.dart';
 
 class Product {
-  Product({this.id, this.name, this.image, this.barcode, this.affiliateShops});
+  Product({this.id, this.name, this.image, this.barcode, this.affiliateShops, this.foodPreference, this.category, this.manufacturer});
 
   factory Product.fromJson(Map<String, dynamic> responseData) {
     // TODO: change
@@ -18,9 +18,12 @@ class Product {
 
     return Product(
         id: id,
+        manufacturer: responseData['manufacturer']['name'] as String,
+        category: responseData['category']['name'] as String,
         name: responseData['name'] as String,
         image: responseData['image'] as String,
         barcode: responseData['barcode'] as String,
+        foodPreference: responseData['foodPreference'] as bool,
         affiliateShops: shops
     );
   }
@@ -29,24 +32,20 @@ class Product {
   String name;
   String image;
   String barcode;
+  String category;
+  String manufacturer;
   List<AffiliateShop> affiliateShops;
+  bool foodPreference;
 
   int shopsQuantity() {
     return affiliateShops.length;
   }
 
-  // TODO
   bool get isPermitted {
-    return id % 3 == 1;
+    return foodPreference == true;
   }
 
-  // TODO
   bool get isDenied {
-    return id % 3 == 2;
-  }
-
-  // TODO
-  bool get isUnknown {
-    return id % 3 == 0;
+    return foodPreference == false;
   }
 }

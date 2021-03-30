@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:yisty_app/screens/scanner/widgets/scanner_button.dart';
 import 'package:yisty_app/widgets/design/subtitle.dart';
@@ -10,7 +11,7 @@ class ScannerBarcodeStep extends StatelessWidget {
 
   Future<void> _openCamera(BuildContext context) async {
     final Color color = Theme.of(context).primaryColor;
-    /*
+
     final String barcode = await FlutterBarcodeScanner.scanBarcode(
       '#${color.value.toRadixString(16)}',
       'Cancelar',
@@ -18,10 +19,10 @@ class ScannerBarcodeStep extends StatelessWidget {
       ScanMode.BARCODE
     );
 
-    if (barcode.isNotEmpty) {
-    */
-      onScanner('barcode'); // onScanner('7791813555032');
-    //}
+    // -1 es el valor que devuelve la libreria cuando cancelan el escaneo.
+    if (barcode.isNotEmpty && barcode != '-1') {
+      onScanner(barcode);
+    }
   }
 
   Widget _buildDescription() {

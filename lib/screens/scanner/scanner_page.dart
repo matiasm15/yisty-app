@@ -25,10 +25,27 @@ class _ScannerPageState extends State<ScannerPage> {
   Future<List<Ingredient>> _ingredientsFuture;
 
   Future<Product> getProductBy(String barcode) {
-    return InheritedProvider.of(context).services.products.list(<String, String>{
+    final InheritedProvider provider = InheritedProvider.of(context);
+
+    return provider.services.products.list(<String, String>{
       'barcode': barcode
     }).then((List<Product> products) {
-      return products.isEmpty ? null : products.first;
+      if (products.isEmpty) {
+        return null;
+      }
+
+      final Product product = products.first;
+
+      provider.services.userScans.create(
+        <String, String>{
+          'date': DateTime.now().toIso8601String(),
+          'result': product.foodPreference.toString(),
+          'productId': product.id.toString(),
+          'userId': provider.uiStore.user.id.toString()
+        }
+      );
+
+      return product;
     });
   }
 

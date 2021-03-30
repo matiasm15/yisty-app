@@ -19,8 +19,6 @@ class UserScansList extends StatelessWidget {
           final UserScan userScan = userScans[i];
 
           return ProductPreview(
-            foodPreference: foodPreference,
-            date: userScan.date,
             product: userScan.product
           );
         }
