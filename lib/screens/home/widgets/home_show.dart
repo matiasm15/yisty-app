@@ -28,8 +28,8 @@ class _HomeShowState extends State<HomeShow> {
   @override
   void didChangeDependencies() {
     final String preference = InheritedProvider.of(context).uiStore.user.foodPreference.name;
-    _future = InheritedProvider.of(context).services.newApis.getArticleResponseByEverything(preference);
-
+    final String changedGenderPreference = preference.substring(0, preference.length - 1) + 'a';
+    _future = InheritedProvider.of(context).services.newApis.getArticleResponseByEverything(Uri.encodeFull(preference + '&' + changedGenderPreference));
     super.didChangeDependencies();
   }
 
