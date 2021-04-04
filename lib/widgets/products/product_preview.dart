@@ -1,47 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:yisty_app/models/product.dart';
-import 'package:yisty_app/models/food_preference.dart';
 import 'package:yisty_app/screens/products/product_page.dart';
+import 'package:yisty_app/widgets/products/product_matching.dart';
 
 class ProductPreview extends StatelessWidget {
-  const ProductPreview({Key key, @required this.product, @required this.foodPreference, this.date}) : super(key: key);
+  const ProductPreview({Key key, @required this.product}) : super(key: key);
 
-  final FoodPreference foodPreference;
   final Product product;
-  final DateTime date;
-
-  Widget buildMatching() {
-    if (foodPreference.isPermitted(product)) {
-      return buildMatchingText('APTO', Colors.green);
-    } else if (FoodPreference().isDenied(product)) {
-      return buildMatchingText('NO APTO', Colors.red);
-    } else {
-      return buildMatchingText('DESCONOCIDO', Colors.grey);
-    }
-  }
-
-  Widget buildMatchingText(String message, Color color) {
-    return Text(
-      message,
-      style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget buildShops() {
-    final int shopsQuantity = product.shopsQuantity();
-
-    if (shopsQuantity == 0) {
-      return Container();
-    }
-
-    return Row(
-      children: <Widget>[
-        const Icon(Icons.local_offer, size: 18, color: Colors.blueAccent),
-        Text(' $shopsQuantity', style: const TextStyle(fontSize: 18, color: Colors.blueAccent, fontWeight: FontWeight.bold))
-      ]
-    );
-  }
 
   Widget buildInfo() {
     return Column(
@@ -59,7 +25,7 @@ class ProductPreview extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 2)
             ),
             Text(
-              product.barcode,
+              '${product.category} (${product.manufacturer})',
               style: const TextStyle(fontSize: 13, fontWeight: FontWeight.normal)
             )
           ]
@@ -68,8 +34,7 @@ class ProductPreview extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            buildMatching(),
-            buildShops()
+            ProductMatching(product: product, icon: false, size: 22)
           ],
         )
       ],
@@ -95,7 +60,13 @@ class ProductPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 buildImage(),
-                Expanded(child: Container(child: buildInfo(), padding: const EdgeInsets.symmetric(horizontal: 10), height: 100,))
+                Expanded(
+                  child: Container(
+                    child: buildInfo(),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 100
+                  )
+                )
               ],
             )
           ),

@@ -53,13 +53,20 @@ class _BasicScaffoldState extends State<BasicScaffold> {
   Widget buildBody() {
     final UiStore uiStore = InheritedProvider.of(context).uiStore;
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
+    return WillPopScope(
+      onWillPop: () async {
+        uiStore.removeAlert();
+
+        return true;
+      },
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
               observerAlert(uiStore),
               widget.body
             ]
+          )
         )
       )
     );

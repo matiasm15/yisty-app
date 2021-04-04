@@ -1,8 +1,14 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:yisty_app/models/ingredient.dart';
+import 'package:yisty_app/models/product.dart';
+import 'package:yisty_app/models/user.dart';
+import 'package:yisty_app/screens/scanner/widgets/scanner_barcode_step.dart';
+import 'package:yisty_app/screens/scanner/widgets/scanner_ingredients_step.dart';
+import 'package:yisty_app/screens/scanner/widgets/scanner_results_step.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
+import 'package:yisty_app/widgets/scaffolds/app_scaffold.dart';
 
 @immutable
 class ScannerPage extends StatefulWidget {
@@ -13,84 +19,104 @@ class ScannerPage extends StatefulWidget {
 }
 
 class _ScannerPageState extends State<ScannerPage> {
-  PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  String _step = 'barcode';
+  String _barcode;
+  Future<Product> _productFuture;
+  Future<List<Ingredient>> _ingredientsFuture;
 
-  Future<void> _openGallery(BuildContext context) async {
-    final PickedFile picture =
-        await _picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _imageFile = picture;
+  Future<Product> getProductBy(String barcode) {
+    final InheritedProvider provider = InheritedProvider.of(context);
+
+    return provider.services.products.list(<String, String>{
+      'barcode': barcode
+    }).then((List<Product> products) {
+      if (products.isEmpty) {
+        return null;
+      }
+
+      final Product product = products.first;
+
+      provider.services.userScans.create(
+        <String, String>{
+          'date': DateTime.now().toIso8601String(),
+          'result': product.foodPreference.toString(),
+          'productId': product.id.toString(),
+          'userId': provider.uiStore.user.id.toString()
+        }
+      );
+
+      return product;
     });
-    Navigator.of(context).pop();
   }
 
-  Future<void> _openCamera(BuildContext context) async {
-    final PickedFile picture =
-        await _picker.getImage(source: ImageSource.camera);
+  Future<List<Ingredient>> getIngredientsBy(String picture) {
+    return InheritedProvider.of(context).services.ingredients.scan(picture);
+  }
+
+  void onScanner(String barcode) {
+    InheritedProvider.of(context).uiStore.removeAlert();
+
     setState(() {
-      _imageFile = picture;
+      _step = 'results';
+      _barcode = barcode;
+      _productFuture = getProductBy(barcode);
+      _ingredientsFuture = null;
     });
-    Navigator.of(context).pop();
   }
 
-  Future<void> _showChoiceDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Seleccionar origen'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  GestureDetector(
-                    child: const Text('Galería'),
-                    onTap: () {
-                      _openGallery(context);
-                    },
-                  ),
-                  const Padding(padding: EdgeInsets.all(8.0)),
-                  GestureDetector(
-                    child: const Text('Tomar foto'),
-                    onTap: () {
-                      _openCamera(context);
-                    },
-                  )
-                ],
-              ),
-            ),
-          );
-        });
+  void onFinish() {
+    setState(() {
+      _step = 'barcode';
+      _barcode = null;
+      _productFuture = null;
+      _ingredientsFuture = null;
+    });
   }
 
-  Widget _checkImageView() {
-    if (_imageFile == null) {
-      return const Text('Ninguna imagen seleccionada');
-    } else {
-      return Image.file(File(_imageFile.path), width: 400, height: 400);
+  Future<void> onIngredientsScan() async {
+    InheritedProvider.of(context).uiStore.removeAlert();
+
+    final PickedFile picture = await ImagePicker().getImage(source: ImageSource.camera);
+
+    if (picture != null) {
+      setState(() {
+        _step = 'ingredients';
+        _productFuture = null;
+        _ingredientsFuture = getIngredientsBy(picture.path);
+      });
+    }
+  }
+
+  Widget _buildBody(User user) {
+    switch (_step) {
+      case 'barcode':
+        return ScannerBarcodeStep(
+          onScanner: onScanner
+        );
+      case 'results':
+        return ScannerResultsStep(
+          onFinish: onFinish,
+          onIngredientsScan: onIngredientsScan,
+          productFuture: _productFuture,
+          user: user
+        );
+      case 'ingredients':
+        return ScannerIngredientsStep(
+          barcode: _barcode,
+          onRetry: onIngredientsScan,
+          onFinish: onFinish,
+          ingredientsFuture: _ingredientsFuture
+        );
+      default:
+        return Container();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick Image'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _checkImageView(),
-            RaisedButton(
-              onPressed: () {
-                _showChoiceDialog(context);
-              },
-              child: const Text('Seleccionar Imagen'),
-            )
-          ],
-        ),
-      ),
+    return AppScaffold(
+      builder: (User user) => _buildBody(user),
+      title: const Text('Escanear producto')
     );
   }
 }

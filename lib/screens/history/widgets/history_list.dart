@@ -28,7 +28,9 @@ class HistoryList extends StatelessWidget {
     final FoodPreference foodPreference = InheritedProvider.of(context).uiStore.user.foodPreference;
 
     final Map<String, List<UserScan>> scansBy = userScans.groupBy<String>((UserScan scan) {
-      final DateTime time = DateTime(scan.date.year, scan.date.month, scan.date.day);
+      final DateTime scanDate = scan.date.toLocal();
+
+      final DateTime time = DateTime(scanDate.year, scanDate.month, scanDate.day);
 
       return DateTimeUtils.ago(time);
     });

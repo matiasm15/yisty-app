@@ -14,7 +14,19 @@ class MaterialYistyApp extends StatelessWidget {
             buttonColor: Colors.green,
             errorColor: Colors.red,
             primaryColor: Colors.green,
-            secondaryHeaderColor: Colors.white
+            secondaryHeaderColor: Colors.white,
+            textTheme: const TextTheme(
+              bodyText2: TextStyle(
+                color: Color.fromRGBO(13, 12, 34, 1)
+              )
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) => Colors.green
+                ),
+              ),
+            )
         ),
         initialRoute: '/home',
         routes: appRoutes

@@ -6,8 +6,8 @@ class UserScan {
   factory UserScan.fromJson(Map<String, dynamic> responseData) {
     return UserScan(
       id: responseData['id'] as int,
-      product: responseData['product'] as Product,
-      date: responseData['date'] as DateTime,
+      product: Product.fromJson(responseData['product'] as Map<String, dynamic>),
+      date: DateTime.parse(responseData['date'] as String),
     );
   }
 
