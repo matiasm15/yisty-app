@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yisty_app/widgets/scaffolds/basic_scaffold.dart';
+import 'package:share/share.dart';
+
 
 // ignore: must_be_immutable
 class NewsShow extends StatefulWidget {
@@ -38,12 +40,11 @@ class _NewsShowState extends State<NewsShow> {
           ],
         ),
         actions: <Widget> [
-          Opacity(
-              opacity: 0,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Icon(Icons.share)
-              ))
+            IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+              icon: const Icon(Icons.share),
+              onPressed: () => Share.share('Compartir noticia: ${widget.postUrl}')
+          )
         ],
         backgroundColor: Colors.green,
         elevation: 0.0,
