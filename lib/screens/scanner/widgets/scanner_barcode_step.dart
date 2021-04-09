@@ -51,11 +51,6 @@ class ScannerBarcodeStep extends StatelessWidget {
             onPressed: _openCamera,
             text: 'Camara'
           ),
-          // ScannerButton(
-          //   icon: Icons.filter,
-          //   onPressed: (_) {},
-          //   text: 'Galeria'
-          // )
         ],
       ),
       padding: const EdgeInsets.only(top: 15)

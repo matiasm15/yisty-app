@@ -1,18 +1,23 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/ingredient.dart';
 import 'package:yisty_app/services/base_service.dart';
+import 'package:yisty_app/services/rest_client/api_response.dart';
 import 'package:yisty_app/services/rest_client/rest_client.dart';
 
 class IngredientService extends BaseService {
   IngredientService({RestClient client, UiStore uiStore}) : super(client: client, uiStore: uiStore);
 
-  Future<List<Ingredient>> scan(String picture) async {
-    // final ApiResponse apiResponse =  await client.post('instructions');
-    // final List<Object> jsonList = apiResponse.json()['data'] as List<Object>;
+  Future<List<Ingredient>> scan(File picture) async {
+    final ApiResponse apiResponse =  await client.post(
+      'scan',
+      body: picture.readAsBytesSync()
+    );
 
     // TODO: remove
+    // final List<Object> jsonList = apiResponse.json()['data'] as List<Object>;
     final List<Object> jsonList = <Object>[
       <String, dynamic>{
         'id': 1,
@@ -28,7 +33,8 @@ class IngredientService extends BaseService {
       }
     ];
 
-    return jsonList.map((Object json) =>
-        Ingredient.fromJson(json as Map<String, dynamic>)).toList();
+    return jsonList.map(
+      (Object json) => Ingredient.fromJson(json as Map<String, dynamic>)
+    ).toList();
   }
 }
