@@ -19,9 +19,21 @@ class BarcodeNotFound extends StatelessWidget {
                   ' si el producto es apto para vos. Tené en cuenta los siguientes consejos'
                   ' al tomar la imagen:'
           ),
-          SuggestionListTile(title: Text('Intenta que el texto sea lo mas legible posible.')),
-          SuggestionListTile(title: Text('Se deben ver todos los ingredientes del producto.')),
-          SuggestionListTile(title: Text('Hazlo desde un lugar con buena iluminación.'))
+          SuggestionListTile(
+            title: Text(
+              'Intenta que el texto sea legible y este centrado horizontalmente.'
+            )
+          ),
+          SuggestionListTile(
+            title: Text(
+              'Hazlo desde un lugar con buena iluminación.'
+            )
+          ),
+          SuggestionListTile(
+            title: Text(
+              'Luego de tomar la imagen podés recortala para eliminar cualquier texto que no sean parte de los ingredientes.'
+            )
+          )
         ]
       )
     );
