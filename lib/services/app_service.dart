@@ -2,6 +2,7 @@ import 'package:flutter_config/flutter_config.dart';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/user.dart';
+import 'package:yisty_app/services/affiliate_shops_product_service.dart';
 import 'package:yisty_app/services/ingredient_service.dart';
 import 'package:yisty_app/services/new_api_service.dart';
 import 'package:yisty_app/services/food_preference_service.dart';
@@ -19,6 +20,7 @@ class AppService {
     newApiKey = FlutterConfig.get('NEW_API_KEY').toString();
     client = RestClient(apiUrl: apiUrl);
 
+    affiliateShopsProducts = AffiliateShopsProductService(client: client, uiStore: uiStore);
     ingredients = IngredientService(client: client, uiStore: uiStore);
     pendingProducts = PendingProductService(client: client, uiStore: uiStore);
     products = ProductService(client: client, uiStore: uiStore);
@@ -34,6 +36,7 @@ class AppService {
   RestClient client;
   UiStore uiStore;
 
+  AffiliateShopsProductService affiliateShopsProducts;
   IngredientService ingredients;
   PendingProductService pendingProducts;
   ProductService products;

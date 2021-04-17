@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SubtitleType {
   static TextStyle get h1 {
     return const TextStyle(
-      fontSize: 22,
+      fontSize: 25,
       color: Colors.green,
       fontWeight: FontWeight.w600
     );
@@ -24,10 +24,11 @@ class SubtitleType {
 }
 
 class Subtitle extends StatelessWidget {
-  const Subtitle({Key key, this.text, this.type}) : super(key: key);
+  const Subtitle({Key key, this.text, this.type, this.padding}) : super(key: key);
 
   final String text;
   final TextStyle type;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class Subtitle extends StatelessWidget {
           style: type ?? SubtitleType.h1,
           textAlign: TextAlign.center
         ),
-        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 7, top: 20)
+        padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 7, top: 20)
     );
   }
 }
