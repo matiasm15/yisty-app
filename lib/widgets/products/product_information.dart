@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:yisty_app/models/product.dart';
+import 'package:yisty_app/util/date_time_utils.dart';
 import 'package:yisty_app/widgets/products/product_barcode.dart';
 import 'package:yisty_app/widgets/products/product_matching.dart';
 import 'package:yisty_app/widgets/design/subtitle.dart';
@@ -10,7 +11,7 @@ class ProductInformation extends StatelessWidget {
 
   final Product product;
 
-  Widget buildMatching(double width) {
+  Widget _buildMatching(double width) {
     return Container(
         width: width,
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -31,7 +32,7 @@ class ProductInformation extends StatelessWidget {
     );
   }
 
-  Widget buildImage() {
+  Widget _buildImage() {
     return Row(
         children: <Widget>[
           Expanded(
@@ -48,53 +49,82 @@ class ProductInformation extends StatelessWidget {
     );
   }
 
-  Widget buildTitle(BuildContext context) {
+  Widget _buildTitle(BuildContext context) {
     return Container(
-      child: Subtitle(text: product.name, type: SubtitleType.h1),
+      child: Column(
+        children: [
+          Subtitle(
+            text: product.name,
+            type: SubtitleType.h1,
+            padding: const EdgeInsets.only(bottom: 4)
+          ),
+          Text('${product.category} (${product.manufacturer})')
+        ]
+      ),
       width: MediaQuery.of(context).size.width * 0.8,
-      margin: const EdgeInsets.symmetric(vertical: 7),
+      padding: const EdgeInsets.symmetric(vertical: 20),
     );
   }
 
-  Widget buildBarcode(BuildContext context, double width) {
+  Widget _buildBarcode(BuildContext context, double width) {
     return Container(
-        width: width,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: <Widget>[
-            Container(
-                child: const Text(
-                    'Código de barras',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
-                ),
-                margin: const EdgeInsets.only(bottom: 10)
+      width: width,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        children: <Widget>[
+          Container(
+            child: const Text(
+              'Código de barras',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
             ),
-            ProductBarcode(product: product),
-          ],
-        )
+            padding: const EdgeInsets.only(bottom: 10)
+          ),
+          ProductBarcode(product: product),
+        ],
+      )
+    );
+  }
+
+  Widget _buildCenterColumn(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width * 0.5 - 1;
+
+    return Center(
+      child: Column(
+        children: [
+          _buildImage(),
+          _buildTitle(context),
+          Container(
+              child: IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buildMatching(width),
+                      const VerticalDivider(color: Colors.black, width: 2),
+                      _buildBarcode(context, width)
+                    ],
+                  )
+              ),
+              margin: const EdgeInsets.only(bottom: 10)
+          ),
+        ],
+      )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width * 0.5 - 1;
-
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        buildImage(),
-        buildTitle(context),
-        Container(
-            child: IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    buildMatching(width),
-                    const VerticalDivider(color: Colors.black, width: 2),
-                    buildBarcode(context, width)
-                  ],
-                )
-            ),
-            margin: const EdgeInsets.only(bottom: 10)
+        _buildCenterColumn(context),
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              const Padding(child: Icon(Icons.timelapse), padding: EdgeInsets.only(right: 5)),
+              Text('Actualizado ${DateTimeUtils.ago(product.updatedAt).toLowerCase()}')
+            ]
+          )
         )
       ]
     );

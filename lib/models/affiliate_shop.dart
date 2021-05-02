@@ -2,11 +2,13 @@ class AffiliateShop {
   AffiliateShop({this.id, this.name, this.description, this.image, this.url});
 
   factory AffiliateShop.fromJson(Map<String, dynamic> responseData) {
+    final Map<String, dynamic> affiliateShops = responseData['affilate_shops'] as Map<String, dynamic>;
+
     return AffiliateShop(
-      id: responseData['id'] as int,
-      name: responseData['name'] as String,
+      id: affiliateShops['id'] as int,
+      name: affiliateShops['name'] as String,
+      image: affiliateShops['image'] as String,
       description: responseData['description'] as String,
-      image: responseData['image'] as String,
       url: responseData['url'] as String,
     );
   }
