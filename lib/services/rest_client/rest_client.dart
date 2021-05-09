@@ -64,6 +64,20 @@ class RestClient {
     }
   }
 
+  Future<ApiResponse> patch(String url, dynamic body) async {
+    try {
+      final http.Response response = await http.patch(
+          Uri.parse(_apiUrl + url),
+          body: body,
+          headers: authHeaders,
+      );
+
+      return ApiResponse(_returnResponse(response));
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+  }
+
   http.Response _returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:

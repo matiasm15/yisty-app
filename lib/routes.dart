@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yisty_app/screens/configuration/index.dart';
 
 import 'package:yisty_app/screens/history/history_page.dart';
 import 'package:yisty_app/screens/home/home_page.dart';
@@ -13,4 +14,5 @@ final Map<String, WidgetBuilder> appRoutes = <String, WidgetBuilder>{
   '/home': (BuildContext context) => const HomePage(),
   '/scanner': (BuildContext context) => const ScannerPage(),
   '/registration': (BuildContext context) => const RegistrationPage(),
+  '/configuration': (BuildContext context) => const ConfigurationPage(),
 };

@@ -55,7 +55,7 @@ class MenuDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings),
             title: const Text('Configuración'),
             onTap: () {
-              Navigator.popAndPushNamed(context, '/scanner');
+              Navigator.popAndPushNamed(context, '/configuration');
             },
           ),
           const Divider(),
