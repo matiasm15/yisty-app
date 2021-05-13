@@ -1,7 +1,7 @@
 import 'package:yisty_app/models/food_preference.dart';
 
 class User {
-  User({this.id, this.fullName, this.email, this.accessToken, this.active});
+  User({this.id, this.fullName, this.email, this.accessToken, this.active, this.foodPreference});
 
   factory User.fromJson(Map<String, dynamic> responseData, String accessToken) {
     return User(
@@ -9,7 +9,8 @@ class User {
         fullName: responseData['full_name'] as String,
         email: responseData['email'] as String,
         active: responseData['active'] as bool,
-        accessToken: accessToken
+        accessToken: accessToken,
+        foodPreference: FoodPreference.fromJson(responseData['food_preference'] as Map<String, dynamic>)
     );
   }
 
@@ -18,5 +19,5 @@ class User {
   String email;
   String accessToken;
   bool active;
-  FoodPreference foodPreference = FoodPreference(id: 1, name: 'Vegano');
+  FoodPreference foodPreference;
 }

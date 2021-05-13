@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/user.dart';
@@ -39,5 +40,13 @@ class UserService extends BaseService {
     );
     final Map<String, dynamic> json = apiResponse.json() as Map<String, dynamic>;
     return User.fromJson(json, null);
+  }
+
+  Future<Void> patch({String id, String key, String value}) async {
+    await client.patch(
+        'users' '/' + id,
+        <String, String>{
+          key: value
+        });
   }
 }
