@@ -48,7 +48,10 @@ class ScannerIngredientsStep extends StatelessWidget {
             return _buildIngredients(snapshot);
           }
 
-          return LoadingWidget();
+          return const LoadingWidget(
+            title: 'Procesando imagen...',
+            text: 'El procesamiento puede tardar varios segundos. Por favor espere.'
+          );
         }
     );
   }

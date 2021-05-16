@@ -53,7 +53,7 @@ class _HistoryContentState extends State<HistoryContent> {
             return HistoryList(userScans: userScans);
           }
 
-          return LoadingWidget();
+          return const LoadingWidget();
         }
     );
   }

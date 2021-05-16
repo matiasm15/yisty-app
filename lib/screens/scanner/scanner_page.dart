@@ -131,7 +131,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
   Widget _buildBody(User user) {
     if (_loading) {
-      return LoadingWidget();
+      return const LoadingWidget();
     }
 
     switch (_step) {

@@ -52,7 +52,7 @@ class ProductInformation extends StatelessWidget {
   Widget _buildTitle(BuildContext context) {
     return Container(
       child: Column(
-        children: [
+        children: <Widget>[
           Subtitle(
             text: product.name,
             type: SubtitleType.h1,
@@ -90,7 +90,7 @@ class ProductInformation extends StatelessWidget {
 
     return Center(
       child: Column(
-        children: [
+        children: <Widget>[
           _buildImage(),
           _buildTitle(context),
           Container(
@@ -120,7 +120,7 @@ class ProductInformation extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15),
           child: Row(
-            children: [
+            children: <Widget>[
               const Padding(child: Icon(Icons.timelapse), padding: EdgeInsets.only(right: 5)),
               Text('Actualizado ${DateTimeUtils.ago(product.updatedAt).toLowerCase()}')
             ]

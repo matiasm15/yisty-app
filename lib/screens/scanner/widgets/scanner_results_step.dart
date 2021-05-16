@@ -50,7 +50,7 @@ class ScannerResultsStep extends StatelessWidget {
           return _buildProduct(snapshot);
         }
 
-        return LoadingWidget();
+        return const LoadingWidget();
       }
     );
   }

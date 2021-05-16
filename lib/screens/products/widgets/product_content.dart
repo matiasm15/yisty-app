@@ -58,7 +58,7 @@ class _ProductContentState extends State<ProductContent> {
             return _buildContent(snapshot.data);
           }
 
-          return LoadingWidget();
+          return const LoadingWidget();
         }
     );
   }
