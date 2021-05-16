@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yisty_app/models/food_preference.dart';
 
 import 'package:yisty_app/models/user.dart';
 
@@ -11,6 +12,8 @@ class UserPersistence {
     prefs.setString('fullName', user.fullName);
     prefs.setString('email', user.email);
     prefs.setString('accessToken', user.accessToken);
+    prefs.setInt('foodPreference.id', user.foodPreference.id);
+    prefs.setString('foodPreference.name', user.foodPreference.name);
 
     return true;
   }
@@ -29,7 +32,9 @@ class UserPersistence {
         fullName: prefs.getString('fullName'),
         email: prefs.getString('email'),
         accessToken: prefs.getString('accessToken'),
-        active: prefs.getBool('active'));
+        active: prefs.getBool('active'),
+        foodPreference: FoodPreference(id: prefs.getInt('foodPreference.id'),
+          name: prefs.getString('foodPreference.name')));
   }
 
   Future<bool> removeUser() async {
@@ -40,6 +45,8 @@ class UserPersistence {
     prefs.remove('email');
     prefs.remove('active');
     prefs.remove('accessToken');
+    prefs.remove('foodPreference.id');
+    prefs.remove('foodPreference.name');
 
     return true;
   }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:smart_select/smart_select.dart';
+import 'package:yisty_app/data/persistence/user_persistence.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/alert_type.dart';
 import 'package:yisty_app/models/food_preference.dart';
@@ -114,7 +115,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
     if(_formKey.currentState.validate()) {
       userService.updateFoodPreference(id: widget.user.id.toString(),
         foodPreference: _preferenceId.toString())
-      .then((_) {
+      .then((_) async {
         uiStore.setAlert(
           message: 'Cambio exitosamente',
           type: AlertType.SUCCESS
@@ -124,6 +125,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
         widget.user.foodPreference = _foodPreferences
             .firstWhere(
               (FoodPreference preference) => preference.id == _preferenceId);
+        await UserPersistence().saveUser(widget.user);
       }).catchError(
               (Object _) => uiStore.setAlert(
               message: 'Ocurrio un error, vuela intentarlo '

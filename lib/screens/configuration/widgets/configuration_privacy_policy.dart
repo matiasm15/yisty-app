@@ -22,7 +22,7 @@ class _ConfigurationPrivacyPolicyState extends State<ConfigurationPrivacyPolicy>
 
   Widget _buildPrivacyAndPolicy() {
     return Container(
-      height: 3050,
+      height: 3200,
       width: MediaQuery.of(context).size.width,
       child: WebView(
         initialUrl: url,
