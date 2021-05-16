@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:smart_select/smart_select.dart';
+import 'package:yisty_app/data/persistence/user_persistence.dart';
 import 'package:yisty_app/data/stores/ui_store.dart';
 import 'package:yisty_app/models/alert_type.dart';
 import 'package:yisty_app/models/food_preference.dart';
@@ -27,6 +28,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
 
   String get title => 'Restricción Alimenticia';
   Future <List<FoodPreference>> _future;
+  List<FoodPreference> _foodPreferences;
   int _preferenceId;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -43,7 +45,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
         builder: (_, AsyncSnapshot<List<FoodPreference>> snapshot) {
           if(snapshot.hasData) {
             final List<FoodPreference> foodPreferences = snapshot.data;
-
+            _foodPreferences = snapshot.data;
             return _showPreferences(foodPreferences);
 
           } else if(snapshot.hasError) {
@@ -111,18 +113,19 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
     final UserService userService = provider.services.users;
 
     if(_formKey.currentState.validate()) {
-      userService.patch(id: widget.user.id.toString(),
-        key: 'foodPreferenceId',
-        value: _preferenceId.toString())
-      .then((_) {
+      userService.updateFoodPreference(id: widget.user.id.toString(),
+        foodPreference: _preferenceId.toString())
+      .then((_) async {
         uiStore.setAlert(
-          message: 'Cambio exitosamente, vuelva iniciar.',
+          message: 'Cambio exitosamente',
           type: AlertType.SUCCESS
         );
-        provider.logoutUser()
-            .then((_) =>
-                Navigator.pushNamedAndRemoveUntil(context, '/login',
-                        (Route<dynamic> route) => false));
+        Navigator.pushNamedAndRemoveUntil(context, '/home',
+                        (Route<dynamic> route) => false);
+        widget.user.foodPreference = _foodPreferences
+            .firstWhere(
+              (FoodPreference preference) => preference.id == _preferenceId);
+        await UserPersistence().saveUser(widget.user);
       }).catchError(
               (Object _) => uiStore.setAlert(
               message: 'Ocurrio un error, vuela intentarlo '
