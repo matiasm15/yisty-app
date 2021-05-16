@@ -154,10 +154,10 @@ class _ConfigurationPasswordFormState extends State<ConfigurationPasswordFrom> {
       final User user = widget.user;
 
       if(_formKey.currentState.validate()) {
-        userService.patch(
+        userService.updatePassword(
               id: user.id.toString(),
-              key: 'password',
-              value: _newPassword
+              newPassword: _oldPassword,
+              oldPassword: _newPassword
             )
             .then(
                 (_) {
@@ -172,8 +172,7 @@ class _ConfigurationPasswordFormState extends State<ConfigurationPasswordFrom> {
               }
             ).catchError(
                 (Object _) => uiStore.setAlert(
-                  message: 'Verifique contraseña anterior sea correcta, '
-                      'si vuelve ocurrir comunicarse con un administrador.',
+                  message: 'Verifique contraseña anterior sea correcta.',
                   type: AlertType.ERROR
                 ),
                 test: (Object e) => e is BadRequestException

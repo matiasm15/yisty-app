@@ -27,6 +27,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
 
   String get title => 'Restricción Alimenticia';
   Future <List<FoodPreference>> _future;
+  List<FoodPreference> _foodPreferences;
   int _preferenceId;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -43,7 +44,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
         builder: (_, AsyncSnapshot<List<FoodPreference>> snapshot) {
           if(snapshot.hasData) {
             final List<FoodPreference> foodPreferences = snapshot.data;
-
+            _foodPreferences = snapshot.data;
             return _showPreferences(foodPreferences);
 
           } else if(snapshot.hasError) {
@@ -111,18 +112,18 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
     final UserService userService = provider.services.users;
 
     if(_formKey.currentState.validate()) {
-      userService.patch(id: widget.user.id.toString(),
-        key: 'foodPreferenceId',
-        value: _preferenceId.toString())
+      userService.updateFoodPreference(id: widget.user.id.toString(),
+        foodPreference: _preferenceId.toString())
       .then((_) {
         uiStore.setAlert(
-          message: 'Cambio exitosamente, vuelva iniciar.',
+          message: 'Cambio exitosamente',
           type: AlertType.SUCCESS
         );
-        provider.logoutUser()
-            .then((_) =>
-                Navigator.pushNamedAndRemoveUntil(context, '/login',
-                        (Route<dynamic> route) => false));
+        Navigator.pushNamedAndRemoveUntil(context, '/home',
+                        (Route<dynamic> route) => false);
+        widget.user.foodPreference = _foodPreferences
+            .firstWhere(
+              (FoodPreference preference) => preference.id == _preferenceId);
       }).catchError(
               (Object _) => uiStore.setAlert(
               message: 'Ocurrio un error, vuela intentarlo '

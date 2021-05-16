@@ -42,11 +42,20 @@ class UserService extends BaseService {
     return User.fromJson(json, null);
   }
 
-  Future<Void> patch({String id, String key, String value}) async {
+  Future<Void> updateFoodPreference({String id, String foodPreference}) async {
     await client.patch(
         'users' '/' + id,
         <String, String>{
-          key: value
+          'foodPreferenceId': foodPreference
+        });
+  }
+
+  Future<Void> updatePassword({String id, String oldPassword, String newPassword}) async {
+    await client.patch(
+        'users' '/' + id,
+        <String, String>{
+          'password': oldPassword,
+          'newPassword': newPassword
         });
   }
 }
