@@ -54,7 +54,7 @@ class _HomeShowState extends State<HomeShow> {
           }
         }
 
-        return LoadingWidget();
+        return const LoadingWidget();
       },
     );
   }
