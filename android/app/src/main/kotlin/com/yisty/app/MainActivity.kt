@@ -1,4 +1,4 @@
-package com.yisty.app
+package ar.com.yisty.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,1 @@
+-keep class ar.com.yisty.app.BuildConfig { *; }
