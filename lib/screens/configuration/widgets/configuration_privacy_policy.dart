@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:yisty_app/widgets/scaffolds/app_scaffold.dart';
 
 class ConfigurationPrivacyPolicy extends StatefulWidget {
@@ -21,9 +22,11 @@ class _ConfigurationPrivacyPolicyState extends State<ConfigurationPrivacyPolicy>
   String get url => FlutterConfig.get('YISTY_API_URL').toString() + '/tos/';
 
   Widget _buildPrivacyAndPolicy() {
+    final EdgeInsets padding = InheritedProvider.of(context).uiStore.screenPadding;
+
     return Container(
-      height: 3200,
-      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height - padding?.top - padding?.bottom - kToolbarHeight,
+      width: MediaQuery.of(context).size.width, 
       child: WebView(
         initialUrl: url,
         onWebViewCreated: (WebViewController webViewController) {

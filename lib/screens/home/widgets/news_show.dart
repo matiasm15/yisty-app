@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yisty_app/widgets/inherited_provider.dart';
 import 'package:yisty_app/widgets/scaffolds/basic_scaffold.dart';
 import 'package:share/share.dart';
 
@@ -23,6 +24,8 @@ class _NewsShowState extends State<NewsShow> {
 
   @override
   Widget build(BuildContext context) {
+    final EdgeInsets padding = InheritedProvider.of(context).uiStore.screenPadding;
+
     return BasicScaffold(
       appBar: AppBar(
         title: Row(
@@ -50,7 +53,7 @@ class _NewsShowState extends State<NewsShow> {
         elevation: 0.0,
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height - padding?.top - padding?.bottom - kToolbarHeight,
         width: MediaQuery.of(context).size.width,
         child: WebView(
           initialUrl: widget.postUrl,
