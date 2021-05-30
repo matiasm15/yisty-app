@@ -116,6 +116,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
     Navigator.of(context).pop();
   }
 
+  String _handleError(Object o) {
+      final RegExp exp = RegExp('unique violation');
+      if(exp.hasMatch(o.toString())) {
+        return 'El $_email ha sido utilizado.';
+      }
+      return 'Ocurrió un error contactar al administrador.';
+  }
+
    void _formSubmitted(RoundedLoadingButtonController controller) {
     FocusScope.of(context).unfocus();
 
@@ -137,14 +145,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
               (_) {
                 uiStore.setAlert(
                   message: 'Gracias por registrarte! Te enviamos '
-                      'un email a '+ _email + ' para activar tu cuenta y poder empezar a usar Yisty',
+                      'un email a $_email para activar tu cuenta y poder empezar a usar Yisty.',
                   type: AlertType.SUCCESS
                 );
                 Navigator.pushReplacementNamed(context, '/login');
               }
           ).catchError(
-              (Object _) => uiStore.setAlert(
-                message: 'Ocurrió un error contactar al administrador',
+              (Object e) => uiStore.setAlert(
+                message: _handleError(e),
                 type: AlertType.ERROR
               ),
               test: (Object e) => e is BadRequestException

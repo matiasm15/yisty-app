@@ -156,8 +156,8 @@ class _ConfigurationPasswordFormState extends State<ConfigurationPasswordFrom> {
       if(_formKey.currentState.validate()) {
         userService.updatePassword(
               id: user.id.toString(),
-              newPassword: _oldPassword,
-              oldPassword: _newPassword
+              newPassword: _newPassword,
+              oldPassword: _oldPassword
             )
             .then(
                 (_) {
@@ -172,7 +172,7 @@ class _ConfigurationPasswordFormState extends State<ConfigurationPasswordFrom> {
               }
             ).catchError(
                 (Object _) => uiStore.setAlert(
-                  message: 'Verifique contraseña anterior sea correcta.',
+                  message: 'Verifique contraseña anterior.',
                   type: AlertType.ERROR
                 ),
                 test: (Object e) => e is BadRequestException

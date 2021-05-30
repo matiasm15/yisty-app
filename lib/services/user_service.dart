@@ -44,7 +44,7 @@ class UserService extends BaseService {
 
   Future<Void> updateFoodPreference({String id, String foodPreference}) async {
     await client.patch(
-        'users' '/' + id,
+        'users/$id',
         <String, String>{
           'foodPreferenceId': foodPreference
         });
@@ -52,7 +52,7 @@ class UserService extends BaseService {
 
   Future<Void> updatePassword({String id, String oldPassword, String newPassword}) async {
     await client.patch(
-        'users' '/' + id,
+        'users/$id'  ,
         <String, String>{
           'password': oldPassword,
           'newPassword': newPassword
