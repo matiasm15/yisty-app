@@ -44,7 +44,11 @@ class ScannerResultsStep extends StatelessWidget {
       builder: (_ , AsyncSnapshot<Product> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return _buildError(snapshot);
+            if (snapshot.error is AppException) {
+              return _buildError(snapshot);
+            }
+
+            throw snapshot.error;
           }
 
           return _buildProduct(snapshot);

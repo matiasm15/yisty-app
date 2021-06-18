@@ -110,7 +110,8 @@ class _ScannerPageState extends State<ScannerPage> {
     });
 
     ImagePicker().getImage(
-      source: ImageSource.camera
+      source: ImageSource.camera,
+      imageQuality: 25
     ).then(
       (PickedFile picture) => _cropImage(picture)
     ).then((File file) {

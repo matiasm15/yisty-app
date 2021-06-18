@@ -37,6 +37,7 @@ class HistoryList extends StatelessWidget {
 
     return ListView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: scansBy.length,
         itemBuilder: (BuildContext context, int i) {
           final String date = scansBy.keys.elementAt(i);
