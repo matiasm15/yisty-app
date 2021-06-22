@@ -55,7 +55,7 @@ class _ConfigurationFoodPreferenceFormState extends State<ConfigurationFoodPrefe
               throw snapshot.error;
             }
           }
-          return LoadingWidget();
+          return const LoadingWidget();
         },
     );
   }

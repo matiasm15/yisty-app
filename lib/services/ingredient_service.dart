@@ -11,27 +11,12 @@ class IngredientService extends BaseService {
   IngredientService({RestClient client, UiStore uiStore}) : super(client: client, uiStore: uiStore);
 
   Future<List<Ingredient>> scan(File picture) async {
-    final ApiResponse apiResponse =  await client.post(
+    final ApiResponse apiResponse = await client.post(
       'scan',
       body: picture.readAsBytesSync()
     );
 
-    // TODO: remove
-    // final List<Object> jsonList = apiResponse.json()['data'] as List<Object>;
-    final List<Object> jsonList = <Object>[
-      <String, dynamic>{
-        'id': 1,
-        'name': 'Azucar'
-      },
-      <String, dynamic>{
-        'id': 2,
-        'name': 'Grasas animales'
-      },
-      <String, dynamic>{
-        'id': 3,
-        'name': 'Colorante'
-      }
-    ];
+    final List<Object> jsonList = apiResponse.json() as List<Object>;
 
     return jsonList.map(
       (Object json) => Ingredient.fromJson(json as Map<String, dynamic>)
