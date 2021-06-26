@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:yisty_app/models/ingredient.dart';
-import 'package:yisty_app/models/product.dart';
 import 'package:yisty_app/models/user.dart';
 import 'package:yisty_app/screens/scanner/widgets/scanner_barcode_step.dart';
 import 'package:yisty_app/screens/scanner/widgets/scanner_ingredients_step.dart';
@@ -28,37 +26,7 @@ class _ScannerPageState extends State<ScannerPage> {
   bool _loading = false;
   String _step = 'barcode';
   String _barcode;
-  Future<Product> _productFuture;
-  Future<List<Ingredient>> _ingredientsFuture;
-
-  Future<Product> getProductBy(String barcode) {
-    final InheritedProvider provider = InheritedProvider.of(context);
-
-    return provider.services.products.list(<String, String>{
-      'barcode': barcode
-    }).then((List<Product> products) {
-      if (products.isEmpty) {
-        return null;
-      }
-
-      final Product product = products.first;
-
-      provider.services.userScans.create(
-        <String, String>{
-          'date': DateTime.now().toIso8601String(),
-          'result': product.foodPreference.toString(),
-          'productId': product.id.toString(),
-          'userId': provider.uiStore.user.id.toString()
-        }
-      );
-
-      return product;
-    });
-  }
-
-  Future<List<Ingredient>> getIngredientsBy(File picture) {
-    return InheritedProvider.of(context).services.ingredients.scan(picture);
-  }
+  File _ingredientsPicture;
 
   void onScanner(String barcode) {
     InheritedProvider.of(context).uiStore.removeAlert();
@@ -66,8 +34,7 @@ class _ScannerPageState extends State<ScannerPage> {
     setState(() {
       _step = 'results';
       _barcode = barcode;
-      _productFuture = getProductBy(barcode);
-      _ingredientsFuture = null;
+      _ingredientsPicture = null;
     });
   }
 
@@ -75,8 +42,7 @@ class _ScannerPageState extends State<ScannerPage> {
     setState(() {
       _step = 'barcode';
       _barcode = null;
-      _productFuture = null;
-      _ingredientsFuture = null;
+      _ingredientsPicture = null;
     });
   }
 
@@ -110,11 +76,12 @@ class _ScannerPageState extends State<ScannerPage> {
     });
 
     ImagePicker().getImage(
-      source: ImageSource.camera
+      source: ImageSource.camera,
+      imageQuality: 25
     ).then(
       (PickedFile picture) => _cropImage(picture)
-    ).then((File file) {
-      if (file == null) {
+    ).then((File ingredientsPicture) {
+      if (ingredientsPicture == null) {
         setState(() {
           _loading = false;
         });
@@ -122,8 +89,7 @@ class _ScannerPageState extends State<ScannerPage> {
         setState(() {
           _loading = false;
           _step = 'ingredients';
-          _productFuture = null;
-          _ingredientsFuture = getIngredientsBy(file);
+          _ingredientsPicture = ingredientsPicture;
         });
       }
     });
@@ -143,7 +109,7 @@ class _ScannerPageState extends State<ScannerPage> {
         return ScannerResultsStep(
           onFinish: onFinish,
           onIngredientsScan: onIngredientsScan,
-          productFuture: _productFuture,
+          barcode: _barcode,
           user: user
         );
       case 'ingredients':
@@ -151,7 +117,7 @@ class _ScannerPageState extends State<ScannerPage> {
           barcode: _barcode,
           onRetry: onIngredientsScan,
           onFinish: onFinish,
-          ingredientsFuture: _ingredientsFuture
+          picture: _ingredientsPicture
         );
       default:
         return Container();

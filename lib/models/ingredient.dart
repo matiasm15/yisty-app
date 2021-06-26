@@ -1,28 +1,31 @@
 class Ingredient {
-  Ingredient({this.id, this.name});
+  Ingredient({this.id, this.name, this.result});
 
   factory Ingredient.fromJson(Map<String, dynamic> responseData) {
     return Ingredient(
       id: responseData['id'] as int,
-      name: responseData['name'] as String
+      name: responseData['name'] as String,
+      result: responseData['result'] as bool,
     );
   }
 
   int id;
   String name;
+  bool result;
 
-  // TODO
+  String get capitalizeName {
+    return '${name[0].toUpperCase()}${name.substring(1)}';
+  }
+
   bool get isPermitted {
-    return id % 3 == 1;
+    return result == true;
   }
 
-  // TODO
   bool get isDenied {
-    return id % 3 == 2;
+    return result == false;
   }
 
-  // TODO
   bool get isUnknown {
-    return id % 3 == 0;
+    return result == null;
   }
 }

@@ -12,6 +12,7 @@ class AffiliateShopsList extends StatelessWidget {
   Widget buildList() {
     return ListView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: affiliateShops.length,
         itemBuilder: (BuildContext context, int i) {
           return AffiliateShopPreview(

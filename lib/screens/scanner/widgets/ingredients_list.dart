@@ -26,6 +26,7 @@ class IngredientsList extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: ingredients.length,
       itemBuilder: (BuildContext context, int index) {
         final Ingredient ingredient = ingredients[index];
@@ -33,7 +34,7 @@ class IngredientsList extends StatelessWidget {
         return Card(
           child: ListTile(
             subtitle: IngredientMatching(ingredient: ingredient, icon: false, size: 20),
-            title: Text(ingredient.name),
+            title: Text(ingredient.capitalizeName),
           )
         );
       },

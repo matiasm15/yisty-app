@@ -14,6 +14,7 @@ class RestClient {
 
   String _apiUrl;
   Map<String, String> authHeaders;
+  Duration duration = const Duration(seconds: 90);
 
   set accessToken(String accessToken) {
     if (accessToken == null) {
@@ -28,11 +29,13 @@ class RestClient {
       final http.Response response = await http.get(
         Uri.parse(_apiUrl + url),
         headers: authHeaders,
-      );
+      ).timeout(duration);
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataException('Timeout connection');
     }
   }
 
@@ -42,11 +45,13 @@ class RestClient {
         Uri.parse(_apiUrl + url),
         body: body,
         headers: headers ?? authHeaders,
-      );
+      ).timeout(duration);
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataException('Timeout connection');
     }
   }
 
@@ -56,11 +61,13 @@ class RestClient {
         Uri.parse(_apiUrl + url),
         body: body,
         headers: authHeaders,
-      );
+      ).timeout(duration);
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataException('Timeout connection');
     }
   }
 
@@ -70,11 +77,13 @@ class RestClient {
           Uri.parse(_apiUrl + url),
           body: body,
           headers: authHeaders,
-      );
+      ).timeout(duration);
 
       return ApiResponse(_returnResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    } on TimeoutException {
+      throw FetchDataException('Timeout connection');
     }
   }
 

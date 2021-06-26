@@ -14,6 +14,7 @@ class UserScansList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: userScans.length,
         itemBuilder: (BuildContext context, int i) {
           final UserScan userScan = userScans[i];
