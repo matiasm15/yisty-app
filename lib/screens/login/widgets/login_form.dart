@@ -165,8 +165,6 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: _formRegistration,
             ),
           ),
-        //const SizedBox(height: 10),
-        // Maldito matias que agrega cosas que rompe
         Container(
           width: double.infinity,
           height: 40,
