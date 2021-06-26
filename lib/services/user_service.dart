@@ -55,4 +55,13 @@ class UserService extends BaseService {
           'newPassword': newPassword
         });
   }
+
+  Future<Void> passwordRecovery({String email}) async {
+    await client.post(
+        'password_recovery',
+        body: <String, Object> {
+          'email': email,
+        }
+    );
+  }
 }

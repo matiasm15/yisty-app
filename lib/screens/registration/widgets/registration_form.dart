@@ -392,6 +392,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         _buildPasswordRepeat(),
         _buildPreference(context),
         _buildCheckBox(),
+        const SizedBox(height: 15),
         _buildLoadingButton(),
         Container(
           width: double.infinity,
