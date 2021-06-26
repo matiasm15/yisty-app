@@ -5,6 +5,7 @@ import 'package:yisty_app/screens/history/history_page.dart';
 import 'package:yisty_app/screens/home/home_page.dart';
 import 'package:yisty_app/screens/login/login_page.dart';
 import 'package:yisty_app/screens/registration/registration_page.dart';
+import 'package:yisty_app/screens/registration/widgets/privacy_policy.dart';
 import 'package:yisty_app/screens/scanner/scanner_page.dart';
 
 
@@ -15,4 +16,5 @@ final Map<String, WidgetBuilder> appRoutes = <String, WidgetBuilder>{
   '/scanner': (BuildContext context) => const ScannerPage(),
   '/registration': (BuildContext context) => const RegistrationPage(),
   '/configuration': (BuildContext context) => const ConfigurationPage(),
+  '/policy': (BuildContext context) => const PrivacyPolicy(),
 };

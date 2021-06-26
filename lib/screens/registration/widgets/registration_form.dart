@@ -1,5 +1,6 @@
 import 'package:yisty_app/models/alert_type.dart';
 import 'package:yisty_app/models/food_preference.dart';
+import 'package:yisty_app/screens/registration/widgets/privacy_policy.dart';
 import 'package:yisty_app/services/food_preference_service.dart';
 import 'package:yisty_app/services/rest_client/api_exceptions.dart';
 import 'package:yisty_app/services/user_service.dart';
@@ -26,9 +27,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   String _email, _password, _fullName, _passwordRepeat;
   int _preferenceId;
+  bool _check = false;
   Future<List<FoodPreference>> _future;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void _checkChanged(bool value) {
+    setState(() {
+      _check = value;
+    });
+  }
 
   void _emailChanged(String value) {
     setState(() {
@@ -124,6 +132,27 @@ class _RegistrationFormState extends State<RegistrationForm> {
       return 'Ocurrió un error contactar al administrador.';
   }
 
+  void _createUser (UserService userService, UiStore uiStore, RoundedLoadingButtonController controller) {
+    userService.create(email: _email, fullName: _fullName, password:
+    _password, preferenceId: _preferenceId)
+        .then(
+            (_) async {
+          Navigator.pushReplacementNamed(context, '/login');
+          uiStore.setAlert(
+              message: 'Gracias por registrarte! Te enviamos '
+                  'un email a $_email para activar tu cuenta y poder empezar a usar Yisty.',
+              type: AlertType.SUCCESS
+          );
+        }
+    ).catchError(
+            (Object e) => uiStore.setAlert(
+            message: _handleError(e),
+            type: AlertType.ERROR
+        ),
+        test: (Object e) => e is BadRequestException
+    ).whenComplete(() => controller.reset());
+  }
+
    void _formSubmitted(RoundedLoadingButtonController controller) {
     FocusScope.of(context).unfocus();
 
@@ -133,35 +162,29 @@ class _RegistrationFormState extends State<RegistrationForm> {
     uiStore.removeAlert();
 
     if (_formKey.currentState.validate()) {
-        if(_preferenceId == null) {
-          uiStore.setAlert(
-              message: 'Debe selecionar una resctrición',
-              type: AlertType.WARNING
-          );
-        } else {
-          userService.create(email: _email, fullName: _fullName, password:
-            _password, preferenceId: _preferenceId)
-          .then(
-              (_) {
-                uiStore.setAlert(
-                  message: 'Gracias por registrarte! Te enviamos '
-                      'un email a $_email para activar tu cuenta y poder empezar a usar Yisty.',
-                  type: AlertType.SUCCESS
-                );
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-          ).catchError(
-              (Object e) => uiStore.setAlert(
-                message: _handleError(e),
-                type: AlertType.ERROR
-              ),
-              test: (Object e) => e is BadRequestException
-          );
-        }
+      if (_preferenceId == null) {
         controller.reset();
+        return uiStore.setAlert(
+            message: 'Debe selecionar una resctrición',
+            type: AlertType.WARNING
+        );
+      }
+
+      if (!_check) {
+        controller.reset();
+        return uiStore.setAlert(
+            message: 'Debe aceptar términos y condiciones',
+            type: AlertType.WARNING
+        );
+      }
+
+      if (_preferenceId != null && _check) {
+        _createUser(userService, uiStore, controller);
+      }
     } else {
       controller.reset();
     }
+
   }
 
   @override
@@ -322,6 +345,31 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
+  Widget _buildCheckBox() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Checkbox(
+          checkColor: Colors.white,
+          activeColor: Colors.green,
+          value: _check,
+          onChanged: _checkChanged
+          ),
+        InkWell(
+          child: const Text(
+            'Aceptar términos y condiciones',
+            style: TextStyle(fontSize: 16)
+          ),
+            onTap: () {
+              Navigator.push<PrivacyPolicy>(context,
+                  MaterialPageRoute(builder:
+                      (BuildContext context) => const PrivacyPolicy()));
+            }
+        )
+      ],
+    );
+  }
+
   Widget _buildLoadingButton() {
     return Container(
         width: double.infinity,
@@ -343,6 +391,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         _buildPassword(),
         _buildPasswordRepeat(),
         _buildPreference(context),
+        _buildCheckBox(),
         _buildLoadingButton(),
         Container(
           width: double.infinity,
