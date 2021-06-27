@@ -26,9 +26,8 @@ class UserService extends BaseService {
     return User.fromJson(json['user'] as Map<String, dynamic>, accessToken);
   }
 
-  // el valor de profileId tiene que definirlo bien actualmente asi lo dejamos seteado
-  Future<User> create({String email, String fullName, String password, int preferenceId}) async {
-    final ApiResponse apiResponse = await client.post(
+  Future<Void> create({String email, String fullName, String password, int preferenceId}) async {
+    await client.post(
       'users',
       body: <String, Object> {
         'email': email,
@@ -38,8 +37,6 @@ class UserService extends BaseService {
         'foodPreferenceId' : preferenceId.toString()
       }
     );
-    final Map<String, dynamic> json = apiResponse.json() as Map<String, dynamic>;
-    return User.fromJson(json, null);
   }
 
   Future<Void> updateFoodPreference({String id, String foodPreference}) async {
@@ -57,5 +54,14 @@ class UserService extends BaseService {
           'password': oldPassword,
           'newPassword': newPassword
         });
+  }
+
+  Future<Void> passwordRecovery({String email}) async {
+    await client.post(
+        'password_recovery',
+        body: <String, Object> {
+          'email': email,
+        }
+    );
   }
 }

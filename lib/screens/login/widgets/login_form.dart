@@ -87,6 +87,10 @@ class _LoginFormState extends State<LoginForm> {
     Navigator.of(context).pushNamed('/registration');
   }
 
+  void _formRecovery() {
+    Navigator.of(context).pushNamed('/recovery');
+  }
+
   String _emailValidator(String value) {
     if (value.isEmpty) {
       return 'El email no puede ser vacío';
@@ -149,17 +153,29 @@ class _LoginFormState extends State<LoginForm> {
               text: 'Iniciar sesión',
               onPressed: _formSubmitted,
             )),
+        const SizedBox(height: 20),
         Container(
           width: double.infinity,
           height: 40,
           child: TextButton(
               child: const Text(
                 'Registrate',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: Colors.grey, fontSize: 14.0),
               ),
               onPressed: _formRegistration,
             ),
           ),
+        Container(
+          width: double.infinity,
+          height: 40,
+          child: TextButton(
+            child: const Text(
+              '¿Has olvidado tu constraseña?',
+              style: TextStyle(color: Colors.grey, fontSize: 14.0),
+            ),
+            onPressed: _formRecovery,
+          ),
+        ),
       ]),
     );
   }
