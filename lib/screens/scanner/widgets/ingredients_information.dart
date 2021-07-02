@@ -46,9 +46,9 @@ class IngredientsInformation extends StatelessWidget {
 
   String _descriptionText() {
     if (ingredients.length > 1) {
-      return 'Se indentificaron ${ingredients.length} ingredientes:';
+      return 'Se identificaron ${ingredients.length} ingredientes:';
     } else {
-      return 'Se indentitico un ingrediente:';
+      return 'Se identificó un ingrediente:';
     }
   }
 
