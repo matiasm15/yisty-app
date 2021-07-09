@@ -34,6 +34,10 @@ class _RecoveryFormState extends State<RecoveryForm> {
       return 'El email es inválido';
     }
 
+    if(value.length < 4 || value.length > 128) {
+      return 'El email tiene una longitud mínina de 4 y máxima 128';
+    }
+
     return null;
   }
 
