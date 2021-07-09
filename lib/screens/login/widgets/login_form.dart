@@ -174,7 +174,7 @@ class _LoginFormState extends State<LoginForm> {
           height: 40,
           child: TextButton(
             child: const Text(
-              '¿Has olvidado tu constraseña?',
+              '¿Has olvidado tu contraseña?',
               style: TextStyle(color: Colors.grey, fontSize: 14.0),
             ),
             onPressed: _formRecovery,
