@@ -8,6 +8,6 @@ class ApiResponse {
   final Response response;
 
   dynamic json() {
-    return jsonDecode(response.body.toString());
+    return jsonDecode(utf8.decode(response.bodyBytes));
   }
 }
